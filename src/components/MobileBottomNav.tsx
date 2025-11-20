@@ -5,41 +5,41 @@ import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import {
   LayoutDashboard,
-  FileSearch,
-  Brain,
-  Camera,
-  CalendarDays,
-  FileCheck
+  Search,
+  Briefcase,
+  Package,
+  MessageSquare,
+  Database
 } from 'lucide-react'
 
 export default function MobileBottomNav() {
   const pathname = usePathname()
-  
+
   const menuItems = [
     {
-      title: 'Dashboard',
+      title: 'Inicio',
       icon: LayoutDashboard,
       href: '/dashboard',
     },
     {
-      title: 'Claims',
-      icon: FileSearch,
-      href: '/dashboard/claims',
+      title: 'Catálogo',
+      icon: Search,
+      href: '/dashboard/catalogo',
     },
     {
-      title: 'Stella',
-      icon: Brain,
-      href: '/dashboard/assistant',
+      title: 'Diseño',
+      icon: Briefcase,
+      href: '/dashboard/diseno',
     },
     {
-      title: 'Schedule',
-      icon: CalendarDays,
-      href: '/dashboard/inspection',
+      title: 'Inventario',
+      icon: Package,
+      href: '/dashboard/inventario',
     },
     {
-      title: 'Reports',
-      icon: FileCheck,
-      href: '/dashboard/reports',
+      title: 'ALMA',
+      icon: Database,
+      href: '/dashboard/analytics',
     }
   ]
 
@@ -65,7 +65,7 @@ export default function MobileBottomNav() {
             {/* Animated background indicator */}
             {activeIndex !== -1 && (
               <motion.div
-                className="absolute inset-y-0 bg-[#E74C3C] rounded-full shadow-lg pointer-events-none"
+                className="absolute inset-y-0 bg-alumimundo-teal rounded-full shadow-lg pointer-events-none"
                 initial={false}
                 animate={{
                   left: `${(activeIndex / menuItems.length) * 100}%`,
@@ -91,7 +91,7 @@ export default function MobileBottomNav() {
                       flex flex-col items-center gap-1 px-2 py-1.5 rounded-full transition-all
                       ${isActive
                         ? 'text-white'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-[#E74C3C] hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
+                        : 'text-gray-600 dark:text-gray-300 hover:text-alumimundo-teal hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
                       }
                     `}
                   >

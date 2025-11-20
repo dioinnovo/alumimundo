@@ -57,9 +57,22 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        stellar: {
-          orange: "#E74C3C",
-          dark: "#2C3E50",
+        // Alumimundo Brand Colors
+        alumimundo: {
+          // Primary Brand Colors
+          navy: "#082B61",      // Deep Navy Blue (primary)
+          teal: "#276770",      // Teal (accent)
+          charcoal: "#3C3C3B",  // Charcoal (dark)
+          dark: "#1D1D1F",      // Dark gray
+
+          // Secondary Colors
+          gray: "#A5A6A7",      // Medium gray
+          light: "#F1F1F3",     // Light gray
+          slate: "#69727D",     // Slate gray
+
+          // Accent Colors
+          magenta: "#CC3366",   // Highlight/CTA
+          whatsapp: "#25D366",  // WhatsApp green
         },
       },
       borderRadius: {

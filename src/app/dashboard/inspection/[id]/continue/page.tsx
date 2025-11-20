@@ -163,7 +163,7 @@ export default function ContinueInspectionPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-stellar-orange mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-alumimundo-navy dark:border-alumimundo-teal mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Loading inspection data...</p>
         </div>
       </div>
@@ -175,10 +175,10 @@ export default function ContinueInspectionPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-red-600 mb-4">{error || 'Failed to load inspection data'}</p>
+          <p className="text-red-600 dark:text-red-400 mb-4">{error || 'Failed to load inspection data'}</p>
           <button
             onClick={() => router.push('/dashboard/inspection')}
-            className="px-4 py-2 bg-stellar-orange text-white rounded-lg hover:bg-orange-600 cursor-pointer"
+            className="px-4 py-2 bg-alumimundo-navy dark:bg-alumimundo-teal text-white rounded-lg hover:bg-alumimundo-navy/90 dark:hover:bg-alumimundo-teal/90 cursor-pointer"
           >
             Back to Inspections
           </button>
@@ -188,10 +188,10 @@ export default function ContinueInspectionPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="space-y-4 sm:space-y-6 w-full">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto py-4 px-4">
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 -mx-4 sm:-mx-6 px-4 sm:px-6">
+        <div className="py-4">
           <div>
             <Link
               href="/dashboard/inspection"
@@ -245,7 +245,7 @@ export default function ContinueInspectionPage() {
             {progress.percentage >= 50 && (
               <button
                 onClick={() => router.push(`/dashboard/inspection/${inspectionId}/complete`)}
-                className="w-full px-6 py-2.5 bg-stellar-orange text-white rounded-full hover:bg-orange-600 transition-all flex items-center justify-center gap-2 font-semibold shadow-lg cursor-pointer"
+                className="w-full px-6 py-2.5 bg-alumimundo-navy dark:bg-alumimundo-teal text-white rounded-full hover:bg-alumimundo-navy/90 dark:hover:bg-alumimundo-teal/90 transition-all flex items-center justify-center gap-2 font-semibold shadow-lg cursor-pointer"
               >
                 <CheckCircle size={18} />
                 Finish Inspection
@@ -256,7 +256,7 @@ export default function ContinueInspectionPage() {
       </div>
 
       {/* Progress Overview */}
-      <div className="max-w-7xl mx-auto py-4 md:py-6 px-4">
+      <div>
         {/* Main Progress Card */}
         <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 p-6 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">

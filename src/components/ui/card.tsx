@@ -1,15 +1,25 @@
 import * as React from "react"
+import { designTokens, cn } from '@/lib/design-tokens'
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={`rounded-xl border bg-card text-card-foreground shadow-sm ${className || ''}`}
-    {...props}
-  />
-))
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: 'default' | 'secondary'
+  hover?: boolean
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant = 'default', hover = true, ...props }, ref) => {
+    const baseClasses = cn(
+      designTokens.backgrounds.card,
+      designTokens.borders.card,
+      designTokens.rounded.md,
+      designTokens.shadows.sm,
+      hover && designTokens.interactive.card,
+      className
+    )
+
+    return <div ref={ref} className={baseClasses} {...props} />
+  }
+)
 Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
@@ -30,7 +40,11 @@ const CardTitle = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <h3
     ref={ref}
-    className={`text-2xl font-semibold leading-none tracking-tight ${className || ''}`}
+    className={cn(
+      'text-lg sm:text-xl font-bold',
+      designTokens.text.primary,
+      className
+    )}
     {...props}
   >
     {children}
@@ -44,7 +58,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={`text-sm text-muted-foreground ${className || ''}`}
+    className={cn('text-sm', designTokens.text.secondary, className)}
     {...props}
   />
 ))

@@ -1,114 +1,419 @@
-# 🏠 Stellar Intelligence Platform - AI Home Inspection System
+# Alumimundo AI Integration Platform
 
-> **Quick Start**: Deploy and run the complete AI-powered home inspection platform in under 10 minutes
+![Alumimundo Logo](public/images/alumimundo_logo.png)
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black?style=flat&logo=next.js)](https://nextjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-20+-green?style=flat&logo=node.js)](https://nodejs.org/)
+> Transforming Costa Rica's premier construction finishes distributor with AI-powered specification, inventory intelligence, and omnichannel customer experience.
+
+[![Next.js](https://img.shields.io/badge/Next.js-16.0.3-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2-blue?style=flat&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.17-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
 
-## 🚀 Quick Deploy (Virtual Machine Ready)
+## 🏢 About Alumimundo
 
-### Prerequisites for VM Deployment
-- **Linux VM** (Ubuntu 20.04+ recommended) with 4GB+ RAM
-- **SSH access** to your virtual machine
-- **Domain/IP** for external access (optional)
+**Alumimundo S.A.** has been Costa Rica's leading distributor of high-end construction finishes for over **40 years** (established 1985). As the exclusive **KOHLER distributor** and representative for premier global brands including Schlage, Steelcraft, and Kallista, Alumimundo serves architects, designers, developers, and contractors across Costa Rica with plans for Central American expansion.
 
-### 1. VM Setup (Ubuntu/Debian)
+### Our Mission
+Transform from a traditional hardware distributor into Central America's first AI-powered construction finishes platform, revolutionizing how professionals specify, purchase, and install premium building materials.
+
+## 🚀 Platform Overview
+
+The Alumimundo AI Integration Platform is a comprehensive suite of AI-powered tools that streamline every aspect of the construction materials lifecycle—from initial specification through installation and maintenance.
+
+### Core AI Modules
+
+#### 1. 🎨 Intelligent Specification & Design Assistant
+AI-powered platform enabling architects and designers to discover, specify, and visualize products through natural language and visual interfaces.
+
+**Key Features:**
+- Natural language product search (Spanish/English)
+- Visual similarity search (upload inspiration images)
+- Code compliance validation (Costa Rican building codes)
+- 3D visualization of products in project spaces
+- Multi-brand catalog integration
+
+**Impact:** 70-80% reduction in specification time (8-15 hours → 2-3 hours)
+
+#### 2. 📦 Predictive Inventory & Supply Chain Intelligence
+ML-driven demand forecasting and inventory optimization system.
+
+**Key Features:**
+- SKU-level demand forecasting
+- Market signal processing (construction permits, economic indicators)
+- Supply chain risk monitoring
+- Dynamic pricing optimization
+- Automated purchase order generation
+
+**Impact:** 25-30% reduction in inventory carrying costs, 90%+ service level
+
+#### 3. 📄 Automated Documentation & Compliance System
+Generative AI system for creating technical specifications, training materials, and compliance documentation.
+
+**Key Features:**
+- Auto-generated spec sheets from product data
+- Localized training content creation
+- Installation guide customization
+- Compliance report automation
+- Multi-language support (Spanish/English)
+
+**Impact:** 85-90% reduction in documentation time
+
+#### 4. 📸 Computer Vision Quality Assurance
+Mobile-based visual inspection system for validating installation quality.
+
+**Key Features:**
+- Installation checkpoint photography
+- Automated quality checks (alignment, hardware, waterproofing)
+- Defect detection pre-installation
+- Installer certification validation
+- Warranty activation upon validation
+
+**Impact:** 40-50% reduction in warranty claims
+
+#### 5. 🌐 Omnichannel Customer Experience Platform
+Unified AI-powered customer interface across web, mobile, and WhatsApp.
+
+**Key Features:**
+- AI showroom assistant
+- Conversational commerce
+- Visual product search
+- Personalized recommendations
+- WhatsApp Business integration
+- Unified customer profile
+
+**Impact:** 200-300% increase in qualified leads
+
+## 🛠️ Technology Stack
+
+### Core Framework
+- **Next.js 16.0.3** - React framework with App Router
+- **React 19.2** - UI library
+- **TypeScript 5** - Type-safe development
+- **Tailwind CSS 3.4.17** - Utility-first styling
+
+### AI/ML Stack
+- **LangChain 0.3.33** & **LangGraph 0.4.9** - AI orchestration
+- **Anthropic Claude** - Advanced reasoning and analysis
+- **OpenAI GPT-4** - Natural language processing
+- **Azure OpenAI** - Enterprise AI services
+- **Vercel AI SDK 5.0.39** - AI integration framework
+- **ChromaDB** - Vector database for embeddings
+
+### UI & Components
+- **shadcn/ui** - Accessible component library
+- **Radix UI** - Headless UI primitives
+- **Framer Motion 12.23.14** - Smooth animations
+- **Lucide React** - Beautiful icons
+
+### Data & Backend
+- **Prisma ORM** - Type-safe database access
+- **SQLite** - Embedded database (development)
+- **Socket.io 4.8.1** - Real-time communication
+- **TanStack Query 5.87.4** - Data fetching and caching
+
+### Additional Services
+- **Recharts 3.2.0** - Data visualization
+- **@pdfme/generator** - PDF report generation
+- **Resend 6.0.3** - Transactional email
+- **Google Maps API** - Location services
+
+## 📋 Prerequisites
+
+- **Node.js** 20.x or higher
+- **npm** or **pnpm** (recommended)
+- API keys for AI services (OpenAI, Anthropic, Azure)
+
+## 🚀 Quick Start
+
+### 1. Clone the Repository
 
 ```bash
-# Update system packages
-sudo apt update && sudo apt upgrade -y
-
-# Install Node.js 20 LTS
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-# Install Git
-sudo apt install git -y
-
-# Verify installations
-node --version    # Should show v20.x.x
-npm --version     # Should show 10.x.x
-git --version     # Should show git version 2.x.x
+git clone https://github.com/your-org/alumimundo-ai-platform.git
+cd alumimundo-ai-platform
 ```
 
-### 2. Clone and Setup Application
+### 2. Install Dependencies
 
 ```bash
-# Clone from Azure DevOps repository
-git clone https://dev.azure.com/Innovoco/Innovoco%20-%20Infrastructure%20and%20Internal%20Development/_git/AI-Stellar-HomeInspection
-
-# Navigate to project
-cd AI-Stellar-HomeInspection
-
-# Install dependencies
 npm install
+# or
+pnpm install
+```
 
-# Setup database
+### 3. Configure Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+# Application Configuration
+NEXT_PUBLIC_APP_NAME="Alumimundo AI Platform"
+NEXT_PUBLIC_WHATSAPP_NUMBER="+506XXXXXXXX"
+NEXT_PUBLIC_SUPPORT_EMAIL="soporte@alumimundo.com"
+
+# AI Configuration
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+AZURE_OPENAI_API_KEY=your_azure_api_key_here
+AZURE_OPENAI_ENDPOINT=your_azure_endpoint_here
+
+# Database
+DATABASE_URL="file:./alumimundo.db"
+
+# Optional Services
+CHROMA_SERVER_URL=http://localhost:8000
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+RESEND_API_KEY=your_resend_api_key
+```
+
+### 4. Initialize Database
+
+```bash
 npx prisma generate
-npx prisma migrate dev --name init
+npx prisma db push
+```
 
-# Start the application
+### 5. Run Development Server
+
+```bash
 npm run dev
+# or
+pnpm dev
 ```
 
-### 3. Access the Application
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
-**Local Access:**
-- Open browser: `http://localhost:3002`
-- Application automatically loads the Schedule Dashboard
-
-**Remote Access (VM with public IP):**
-```bash
-# Allow port 3002 through firewall
-sudo ufw allow 3002
-
-# Start with host binding for external access
-npm run dev -- --hostname 0.0.0.0
-```
-- Access via: `http://YOUR_VM_IP:3002`
-
-## 🎯 What You Get Out of the Box
-
-### Core Features Available Immediately:
-- **📅 Schedule Dashboard** - Manage inspection appointments
-- **🏠 Property Inspection Workflow** - Complete inspection process
-- **📋 Claims Management** - Track and manage claims
-- **📊 Reports & Analytics** - Generate detailed reports
-- **🤖 AI Assistant** - Voice and text interaction
-- **📧 Email Notifications** - Automated communication
-
-### Pre-configured Integrations:
-- ✅ **Azure OpenAI** - GPT-4 powered analysis
-- ✅ **Voice Chat** - Real-time voice interaction
-- ✅ **Email Service** - Automated notifications via Resend
-- ✅ **Google Maps** - Address autocomplete and mapping
-- ✅ **PDF Generation** - Automated report creation
-- ✅ **Database** - SQLite with Prisma ORM
-
-## 🛠️ Production Deployment
-
-### Docker Deployment (Recommended for Production)
+### 6. Build for Production
 
 ```bash
-# Create Dockerfile (if not exists)
-cat > Dockerfile << 'EOF'
-FROM node:20-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3002
-CMD ["npm", "start"]
-EOF
-
-# Build and run with Docker
-docker build -t stellar-app .
-docker run -d -p 3002:3002 --name stellar-app stellar-app
+npm run build
+npm start
 ```
 
-### PM2 Process Manager (Alternative)
+## 📁 Project Structure
+
+```
+alumimundo/
+├── src/
+│   ├── app/                      # Next.js App Router
+│   │   ├── (marketing)/          # Public marketing pages
+│   │   │   ├── landing/          # Hero, features, stats
+│   │   │   ├── pricing/          # Service tiers
+│   │   │   └── demo/             # Interactive demo
+│   │   ├── admin/                # Admin dashboard
+│   │   ├── dashboard/            # Protected user dashboard
+│   │   │   ├── specification/    # Product specification
+│   │   │   ├── projects/         # Project management
+│   │   │   ├── inventory/        # Inventory intelligence
+│   │   │   ├── documentation/    # Auto-generated docs
+│   │   │   ├── quality/          # Quality assurance
+│   │   │   ├── assistant/        # AI assistant
+│   │   │   └── reports/          # Analytics
+│   │   ├── api/                  # API routes
+│   │   ├── layout.tsx            # Root layout
+│   │   ├── page.tsx              # Landing page
+│   │   └── globals.css           # Global styles
+│   ├── components/
+│   │   ├── ui/                   # shadcn/ui components
+│   │   ├── Sidebar.tsx           # Navigation
+│   │   └── MobileBottomNav.tsx   # Mobile nav
+│   └── contexts/                 # React contexts
+├── public/
+│   └── images/                   # Assets, logos
+├── docs/                         # Documentation
+│   ├── prd_alumimundo.md         # Product Requirements
+│   ├── alumimundo_ai_research_part1.md
+│   └── DESIGN_SYSTEM.md          # Branding guide
+├── prisma/
+│   └── schema.prisma             # Database schema
+├── package.json
+├── tailwind.config.ts
+├── tsconfig.json
+├── CLAUDE.md                     # AI assistant context
+└── README.md                     # This file
+```
+
+## 🎯 Target Users
+
+### Primary Users
+- **Architects & Interior Designers**: 500+ active specifiers in Costa Rica
+- **Developers & Contractors**: 200+ commercial and residential project managers
+- **Alumimundo Technical Advisors**: 15-20 internal staff members
+- **Installation Partners**: 100+ certified installers
+
+### Secondary Users
+- **End Customers**: High-income homeowners and property managers
+- **Operations Team**: Inventory, purchasing, and logistics staff
+- **Training Department**: Certification and education coordinators
+- **Customer Service**: Support representatives
+
+## 📊 Business Impact & KPIs
+
+### Operational Efficiency
+- **Specification time**: 70-80% reduction (8-15 hours → 2-3 hours)
+- **Inventory turnover**: 5-6x annually (from 3-4x)
+- **Documentation time**: 85-90% reduction (2-4 hours → 15-30 minutes)
+- **Installation success**: 90-95% first-time success rate
+
+### Customer Experience
+- **Response time**: <1 hour (24/7 AI assistance)
+- **Project win rate**: 55-65% (from 40-45%)
+- **NPS**: 70-80 (from 45-55)
+- **Retention**: 90% architect/designer retention
+
+### Business Growth
+- **Revenue per employee**: $400K (from ~$250K - 60% increase)
+- **Geographic reach**: 5+ countries (from Costa Rica only)
+- **Projects capacity**: 100-150 simultaneous (from 30-40)
+- **Digital revenue**: 30-35% (from <5%)
+
+## 🎨 Design System
+
+### Brand Colors
+
+```css
+/* Primary Brand Colors */
+--alumimundo-navy: #082B61;      /* Deep Navy Blue */
+--alumimundo-teal: #276770;      /* Teal Accent */
+--alumimundo-charcoal: #3C3C3B;  /* Charcoal */
+--alumimundo-dark: #1D1D1F;      /* Dark Gray */
+
+/* Secondary Colors */
+--alumimundo-gray: #A5A6A7;      /* Medium Gray */
+--alumimundo-light: #F1F1F3;     /* Light Gray */
+--alumimundo-slate: #69727D;     /* Slate */
+
+/* Accent Colors */
+--alumimundo-magenta: #CC3366;   /* Highlight/CTA */
+--alumimundo-whatsapp: #25D366;  /* WhatsApp Green */
+```
+
+### Typography
+- **Font Family**: Fivo Sans (with system fallbacks)
+- **Headings**: Semi-bold (600), 1.1 line-height
+- **Body**: Regular (400), 16px, 1.5 line-height
+- **Buttons**: Medium (500), 15px, pill-shaped
+
+See [DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) for complete branding guidelines.
+
+## 🔌 API Routes
+
+### Specifications
+- `POST /api/specifications/generate` - AI-powered spec generation
+- `GET /api/specifications/search` - RAG product search
+
+### Projects
+- `GET /api/projects` - List projects
+- `POST /api/projects` - Create project
+- `PATCH /api/projects/:id` - Update project
+
+### Inventory
+- `GET /api/inventory/forecast` - Demand forecasting
+- `GET /api/inventory/recommendations` - Reorder suggestions
+
+### Documentation
+- `POST /api/documentation/generate` - Auto-generate docs
+
+### Quality
+- `POST /api/quality/analyze` - CV quality validation
+
+### WhatsApp
+- `POST /api/whatsapp/webhook` - WhatsApp Business webhook
+
+### Products
+- `GET /api/products/search` - Product catalog search
+- `POST /api/products/similarity` - Visual similarity search
+
+## 🗄️ Database Schema
+
+### Core Models
+- **Project**: Project management and tracking
+- **Specification**: Product specifications per project
+- **Product**: Complete product catalog (10,000+ SKUs)
+- **Document**: Generated documents and reports
+- **QualityCheck**: Installation validation records
+- **Activity**: Audit trail and activity log
+- **User**: User management with roles
+
+See [prisma/schema.prisma](prisma/schema.prisma) for complete schema.
+
+## 🌍 Language & Localization
+
+- **Primary Language**: Spanish (es-CR)
+- **Secondary Language**: English (en-US)
+- **Default Locale**: Costa Rica
+- **AI Assistant**: Bilingual (Spanish/English)
+
+## 🚧 Implementation Roadmap
+
+### Phase 1: Foundation (Months 1-4) 🚀
+- [x] Platform architecture and branding
+- [x] Data infrastructure setup
+- [ ] Basic RAG system for product search
+- [ ] Automated spec sheet generator
+- [ ] CRM integration
+
+### Phase 2: Core Features (Months 5-9) 📋
+- [ ] Full specification assistant
+- [ ] Predictive inventory system
+- [ ] Computer vision quality control pilot
+- [ ] ERP/CRM integration
+
+### Phase 3: Scale & Integration (Months 10-15) 🌐
+- [ ] Omnichannel customer platform
+- [ ] WhatsApp Business integration
+- [ ] Multi-language support
+- [ ] Regional expansion pilots
+
+### Phase 4: Optimization (Months 16-24) 🎯
+- [ ] Multi-agent orchestration
+- [ ] Predictive project analytics
+- [ ] Partner API ecosystem
+- [ ] Central American rollout
+
+## 🧪 Testing
+
+```bash
+# Run unit tests
+npm test
+
+# Run integration tests
+npm run test:integration
+
+# Run E2E tests
+npm run test:e2e
+
+# Check code coverage
+npm run test:coverage
+```
+
+## 📦 Deployment
+
+### Vercel (Recommended)
+
+1. **Connect Repository**
+   ```bash
+   vercel
+   ```
+
+2. **Configure Environment Variables**
+   - Add all environment variables from `.env.local` in Vercel dashboard
+
+3. **Deploy**
+   ```bash
+   vercel --prod
+   ```
+
+### Docker
+
+```bash
+# Build image
+docker build -t alumimundo-ai-platform .
+
+# Run container
+docker run -p 3000:3000 alumimundo-ai-platform
+```
+
+### PM2 Process Manager
 
 ```bash
 # Install PM2 globally
@@ -118,122 +423,31 @@ npm install -g pm2
 npm run build
 
 # Start with PM2
-pm2 start npm --name "stellar-app" -- start
+pm2 start npm --name "alumimundo-ai" -- start
 
 # Setup auto-restart on boot
 pm2 startup
 pm2 save
 ```
 
-### Nginx Reverse Proxy (Optional)
+## 📚 Documentation
 
-```bash
-# Install Nginx
-sudo apt install nginx -y
+- **Product Requirements**: [docs/prd_alumimundo.md](docs/prd_alumimundo.md)
+- **Research Analysis**: [docs/alumimundo_ai_research_part1.md](docs/alumimundo_ai_research_part1.md)
+- **Design System**: [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md)
+- **AI Assistant Context**: [CLAUDE.md](CLAUDE.md)
 
-# Create Nginx configuration
-sudo tee /etc/nginx/sites-available/stellar << 'EOF'
-server {
-    listen 80;
-    server_name your-domain.com;  # Replace with your domain
+## 🤝 Contributing
 
-    location / {
-        proxy_pass http://localhost:3002;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-EOF
+We welcome contributions! Please follow these guidelines:
 
-# Enable the site
-sudo ln -s /etc/nginx/sites-available/stellar /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl restart nginx
-```
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📁 Project Structure
-
-```
-AI-Stellar-HomeInspection/
-├── app/                          # Next.js App Router
-│   ├── dashboard/                # Main application dashboards
-│   │   ├── inspection/           # Inspection management
-│   │   ├── claims/               # Claims processing
-│   │   └── reports/              # Analytics and reports
-│   ├── api/                      # API endpoints
-│   └── page.tsx                  # Auto-redirects to dashboard
-├── components/                   # Reusable UI components
-├── lib/                          # Utilities and integrations
-├── docs/                         # Documentation
-│   └── INSTALLATION.md           # Detailed setup guide
-├── prisma/                       # Database schema and migrations
-└── .env.local                    # Pre-configured environment
-```
-
-## 🔧 Configuration
-
-### Environment Variables (Pre-configured)
-
-The application comes with a ready-to-use `.env.local` file containing:
-
-```env
-# Azure OpenAI (Ready to use)
-AZURE_OPENAI_ENDPOINT=configured
-AZURE_OPENAI_KEY=configured
-
-# Email Service (Ready to use)
-RESEND_API_KEY=configured
-RESEND_FROM_EMAIL=claims@stellaradjusting.com
-
-# Database (SQLite - ready for development)
-DATABASE_URL="file:./dev.db"
-
-# Application Settings
-NEXT_PUBLIC_DEMO_MODE=false
-NODE_ENV=development
-```
-
-### For Production - Update These:
-
-```bash
-# Edit environment file
-nano .env.local
-
-# Update these values:
-NODE_ENV=production
-NEXTAUTH_URL=https://your-domain.com
-NEXT_PUBLIC_DEMO_MODE=false
-```
-
-## 🧪 Testing the Deployment
-
-### 1. Application Health Check
-```bash
-# Test if application is running
-curl http://localhost:3002/api/health
-# Expected: {"status":"ok","timestamp":"..."}
-```
-
-### 2. Database Connection
-```bash
-# Open Prisma Studio to view data
-npx prisma studio
-# Opens http://localhost:5555 with database interface
-```
-
-### 3. Feature Testing
-- **Schedule Dashboard**: Create and manage inspections
-- **Claims Processing**: Submit and track claims
-- **AI Assistant**: Test voice and text interactions
-- **Report Generation**: Generate and download PDF reports
-
-## 🐛 Quick Troubleshooting
+## 🐛 Troubleshooting
 
 ### Application Won't Start
 ```bash
@@ -245,115 +459,42 @@ rm -rf node_modules package-lock.json
 npm install
 
 # Reset database
-rm -f prisma/dev.db
+rm -f prisma/alumimundo.db
 npx prisma migrate dev --name fresh_start
 ```
 
 ### Port Issues
 ```bash
-# Find process using port 3002
-sudo lsof -ti:3002
+# Find process using port 3000
+sudo lsof -ti:3000
 
 # Kill process
-sudo kill -9 $(sudo lsof -ti:3002)
+sudo kill -9 $(sudo lsof -ti:3000)
 
 # Or use different port
-PORT=3003 npm run dev
+PORT=3001 npm run dev
 ```
 
-### Permission Errors
-```bash
-# Fix npm permissions
-sudo chown -R $(whoami) ~/.npm
-sudo chown -R $(whoami) /usr/local/lib/node_modules
-```
+## 📄 License
 
-## 📖 Documentation
+This project is proprietary and confidential. © 2024 Alumimundo S.A. All rights reserved.
 
-- **[Complete Installation Guide](docs/INSTALLATION.md)** - Detailed setup instructions
-- **[API Documentation](docs/API.md)** - API endpoints and usage (coming soon)
-- **[Deployment Guide](docs/DEPLOYMENT.md)** - Production deployment options (coming soon)
+## 📞 Support & Contact
 
-## 🔐 Security Notes
+- **Website**: [alumimundo.com](https://alumimundo.com/)
+- **Email**: soporte@alumimundo.com
+- **WhatsApp**: +506 XXXX-XXXX (configured in environment)
+- **Location**: San José & Guanacaste, Costa Rica
 
-### Default Security Settings:
-- ✅ Environment variables for sensitive data
-- ✅ Input validation with Zod schemas
-- ✅ SQL injection prevention via Prisma
-- ✅ XSS protection built into React/Next.js
+## 🙏 Acknowledgments
 
-### Production Security Checklist:
-- [ ] Change default API keys in `.env.local`
-- [ ] Enable HTTPS with SSL certificates
-- [ ] Configure firewall rules
-- [ ] Set up regular backups
-- [ ] Enable access logging
-
-## 🎯 Use Cases
-
-### Insurance Companies
-- Automate property inspections
-- Generate comprehensive reports
-- Streamline claims processing
-- Reduce manual documentation time
-
-### Property Managers
-- Schedule routine inspections
-- Track property conditions
-- Generate maintenance reports
-- Coordinate with contractors
-
-### Home Inspectors
-- Digital inspection workflows
-- Voice-powered data collection
-- Automated report generation
-- Client communication tools
-
-## 📊 Performance
-
-**Expected Performance:**
-- **Startup Time**: < 10 seconds
-- **Report Generation**: < 30 seconds
-- **Database Queries**: < 100ms average
-- **Page Load Times**: < 2 seconds
-
-**Resource Requirements:**
-- **Development**: 2GB RAM, 1 CPU core
-- **Production**: 4GB RAM, 2 CPU cores
-- **Storage**: 5GB minimum (including logs and data)
-
-## 🆘 Support
-
-### Quick Help
-- **Documentation**: Check `docs/INSTALLATION.md` for detailed setup
-- **Logs**: Check browser console and terminal output
-- **Database**: Use `npx prisma studio` to inspect data
-
-### Contact
-- **Technical Issues**: Create issue in Azure DevOps repository
-- **Feature Requests**: Contact development team
-- **Deployment Help**: Reference this README or detailed docs
+- **KOHLER** - Exclusive partnership and product excellence
+- **Schlage, Steelcraft, Kallista** - Premium brand partnerships
+- **Anthropic & OpenAI** - AI technology providers
+- **Vercel** - Deployment and hosting platform
 
 ---
 
-## 📋 Quick Commands Reference
+**Built with ❤️ for the future of construction specification in Central America**
 
-```bash
-# Development
-npm run dev              # Start development server
-npm run dev:turbo        # Start with turbo mode (faster)
-
-# Production
-npm run build           # Build for production
-npm start              # Start production server
-
-# Database
-npx prisma studio      # Open database interface
-npx prisma migrate dev # Apply database changes
-
-# Utilities
-npm run lint           # Check code quality
-git pull              # Update from repository
-```
-
-**🚀 Ready to deploy? Just run the Quick Deploy commands above and you'll have the full Stellar Intelligence Platform running in minutes!**
+*Last Updated: November 2024 - Transformation from Stellar Intelligence Platform to Alumimundo AI Platform*

@@ -1,215 +1,208 @@
-import { Storage } from '@google-cloud/storage';
-import { Readable } from 'stream';
+/**
+ * Google Cloud Storage Service for Alumimundo
+ *
+ * Handles image uploads to GCS bucket for product inventory
+ */
 
-// Initialize Google Cloud Storage client
-let storage: Storage | null = null;
+import { Storage } from '@google-cloud/storage'
+import path from 'path'
+import fs from 'fs'
 
-// Get storage instance (singleton pattern)
-function getStorage(): Storage {
+// Environment variables
+const PROJECT_ID = process.env.GCS_PROJECT_ID || process.env.GOOGLE_CLOUD_PROJECT_ID
+const BUCKET_NAME = process.env.GCS_BUCKET_NAME || process.env.GOOGLE_CLOUD_BUCKET
+const SERVICE_ACCOUNT_KEY_PATH = process.env.GOOGLE_APPLICATION_CREDENTIALS
+const SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_CLOUD_SERVICE_ACCOUNT
+
+// Initialize GCS client
+let storage: Storage | null = null
+
+/**
+ * Get or create Storage instance
+ */
+export function getStorageClient(): Storage {
   if (!storage) {
-    const projectId = process.env.GCS_PROJECT_ID;
-    const keyFilename = process.env.GCS_KEY_FILE; // Path to service account key file
-    const credentials = process.env.GCS_SERVICE_ACCOUNT_KEY
-      ? JSON.parse(Buffer.from(process.env.GCS_SERVICE_ACCOUNT_KEY, 'base64').toString())
-      : undefined;
-
-    if (!projectId) {
-      throw new Error('GCS_PROJECT_ID environment variable is not set');
+    if (!PROJECT_ID) {
+      throw new Error('GCS_PROJECT_ID or GOOGLE_CLOUD_PROJECT_ID environment variable is required')
     }
 
-    storage = new Storage({
-      projectId,
-      ...(keyFilename && { keyFilename }),
-      ...(credentials && { credentials }),
-    });
-  }
-  return storage;
-}
+    // Option 1: Use service account key JSON file (preferred for production)
+    if (SERVICE_ACCOUNT_KEY_PATH) {
+      const keyPath = path.resolve(SERVICE_ACCOUNT_KEY_PATH)
 
-// Get bucket instance
-function getBucket() {
-  const bucketName = process.env.GCS_BUCKET_NAME;
-  if (!bucketName) {
-    throw new Error('GCS_BUCKET_NAME environment variable is not set');
-  }
-  return getStorage().bucket(bucketName);
-}
-
-export interface UploadOptions {
-  fileName: string;
-  file: Buffer | Readable;
-  contentType?: string;
-  metadata?: Record<string, string>;
-  isPublic?: boolean;
-}
-
-export interface DocumentMetadata {
-  id: string;
-  fileName: string;
-  url: string;
-  contentType: string;
-  size: number;
-  uploadedAt: Date;
-  claimId: string;
-}
-
-/**
- * Upload a file to Google Cloud Storage
- */
-export async function uploadFile({
-  fileName,
-  file,
-  contentType = 'application/octet-stream',
-  metadata = {},
-  isPublic = false,
-}: UploadOptions): Promise<string> {
-  try {
-    const bucket = getBucket();
-    const blob = bucket.file(fileName);
-
-    const stream = blob.createWriteStream({
-      resumable: false,
-      metadata: {
-        contentType,
-        metadata,
-      },
-    });
-
-    return new Promise((resolve, reject) => {
-      stream.on('error', (error) => {
-        console.error('Error uploading file:', error);
-        reject(error);
-      });
-
-      stream.on('finish', async () => {
-        try {
-          // Make the file public if requested
-          if (isPublic) {
-            await blob.makePublic();
-            const publicUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
-            resolve(publicUrl);
-          } else {
-            // Generate a signed URL for private files (expires in 7 days)
-            const [signedUrl] = await blob.getSignedUrl({
-              version: 'v4',
-              action: 'read',
-              expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
-            });
-            resolve(signedUrl);
-          }
-        } catch (error) {
-          reject(error);
-        }
-      });
-
-      // Handle Buffer or Readable stream
-      if (Buffer.isBuffer(file)) {
-        stream.end(file);
-      } else if (file instanceof Readable) {
-        file.pipe(stream);
-      } else {
-        reject(new Error('File must be a Buffer or Readable stream'));
+      if (!fs.existsSync(keyPath)) {
+        throw new Error(`Service account key file not found at: ${keyPath}`)
       }
-    });
-  } catch (error) {
-    console.error('Error in uploadFile:', error);
-    throw error;
+
+      storage = new Storage({
+        projectId: PROJECT_ID,
+        keyFilename: keyPath,
+      })
+
+      console.log('✅ GCS initialized with service account key:', keyPath)
+    }
+    // Option 2: Use Application Default Credentials (for local development with gcloud)
+    else {
+      storage = new Storage({
+        projectId: PROJECT_ID,
+      })
+
+      console.log('✅ GCS initialized with Application Default Credentials')
+    }
   }
+  return storage
 }
 
 /**
- * Delete a file from Google Cloud Storage
+ * Get the GCS bucket instance
  */
-export async function deleteFile(fileName: string): Promise<void> {
-  try {
-    const bucket = getBucket();
-    await bucket.file(fileName).delete();
-  } catch (error) {
-    console.error('Error deleting file:', error);
-    throw error;
+export function getBucket() {
+  if (!BUCKET_NAME) {
+    throw new Error('GCS_BUCKET_NAME or GOOGLE_CLOUD_BUCKET environment variable is required')
   }
+
+  const client = getStorageClient()
+  return client.bucket(BUCKET_NAME)
 }
 
 /**
- * Get a signed URL for a file
+ * Upload image buffer to GCS
+ *
+ * @param imageBuffer - Image data as Buffer
+ * @param destinationPath - Path in bucket (e.g., "kohler/K-12345-1.jpg")
+ * @param contentType - MIME type (e.g., "image/jpeg")
+ * @returns GCS URL and public URL
  */
-export async function getSignedUrl(
-  fileName: string,
-  expiresInMinutes: number = 60
-): Promise<string> {
-  try {
-    const bucket = getBucket();
-    const [signedUrl] = await bucket.file(fileName).getSignedUrl({
-      version: 'v4',
-      action: 'read',
-      expires: Date.now() + expiresInMinutes * 60 * 1000,
-    });
-    return signedUrl;
-  } catch (error) {
-    console.error('Error generating signed URL:', error);
-    throw error;
-  }
-}
+export async function uploadImage(
+  imageBuffer: Buffer,
+  destinationPath: string,
+  contentType: string = 'image/jpeg'
+): Promise<{
+  gcsUrl: string
+  publicUrl: string
+}> {
+  const bucket = getBucket()
+  const file = bucket.file(destinationPath)
 
-/**
- * Check if a file exists in Google Cloud Storage
- */
-export async function fileExists(fileName: string): Promise<boolean> {
-  try {
-    const bucket = getBucket();
-    const [exists] = await bucket.file(fileName).exists();
-    return exists;
-  } catch (error) {
-    console.error('Error checking file existence:', error);
-    return false;
-  }
-}
-
-/**
- * Get file metadata
- */
-export async function getFileMetadata(fileName: string) {
-  try {
-    const bucket = getBucket();
-    const [metadata] = await bucket.file(fileName).getMetadata();
-    return metadata;
-  } catch (error) {
-    console.error('Error getting file metadata:', error);
-    throw error;
-  }
-}
-
-/**
- * Upload a document for a claim
- */
-export async function uploadClaimDocument(
-  claimId: string,
-  fileName: string,
-  file: Buffer | Readable,
-  contentType: string = 'application/pdf'
-): Promise<DocumentMetadata> {
-  const timestamp = Date.now();
-  const sanitizedFileName = fileName.replace(/[^a-zA-Z0-9.-]/g, '_');
-  const gcsFileName = `claims/${claimId}/documents/${timestamp}-${sanitizedFileName}`;
-
-  const url = await uploadFile({
-    fileName: gcsFileName,
-    file,
-    contentType,
+  // Upload the file
+  await file.save(imageBuffer, {
     metadata: {
-      claimId,
-      originalFileName: fileName,
-      uploadedAt: new Date().toISOString(),
+      contentType,
+      cacheControl: 'public, max-age=31536000', // 1 year cache
     },
-  });
+    resumable: false, // Use simple upload for small files
+  })
 
-  return {
-    id: `${claimId}-${timestamp}`,
-    fileName,
-    url,
-    contentType,
-    size: Buffer.isBuffer(file) ? file.length : 0,
-    uploadedAt: new Date(),
-    claimId,
-  };
+  // Make the file publicly readable
+  await file.makePublic()
+
+  const gcsUrl = `gs://${BUCKET_NAME}/${destinationPath}`
+  const publicUrl = `https://storage.googleapis.com/${BUCKET_NAME}/${destinationPath}`
+
+  return { gcsUrl, publicUrl }
+}
+
+/**
+ * Upload image from URL to GCS
+ *
+ * @param imageUrl - Source image URL to download
+ * @param destinationPath - Path in bucket (e.g., "kohler/K-12345-1.jpg")
+ * @returns GCS URL and public URL
+ */
+export async function uploadImageFromUrl(
+  imageUrl: string,
+  destinationPath: string
+): Promise<{
+  gcsUrl: string
+  publicUrl: string
+}> {
+  // Fetch the image
+  const response = await fetch(imageUrl)
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch image from ${imageUrl}: ${response.statusText}`)
+  }
+
+  const arrayBuffer = await response.arrayBuffer()
+  const buffer = Buffer.from(arrayBuffer)
+
+  // Get content type from response or infer from URL
+  const contentType = response.headers.get('content-type') || inferContentType(imageUrl)
+
+  return uploadImage(buffer, destinationPath, contentType)
+}
+
+/**
+ * Delete an image from GCS
+ *
+ * @param gcsUrl - GCS URL (e.g., "gs://bucket/path/to/image.jpg")
+ */
+export async function deleteImage(gcsUrl: string): Promise<void> {
+  const bucket = getBucket()
+
+  // Extract path from gs:// URL
+  const path = gcsUrl.replace(`gs://${BUCKET_NAME}/`, '')
+  const file = bucket.file(path)
+
+  await file.delete()
+}
+
+/**
+ * Check if a file exists in GCS
+ *
+ * @param gcsUrl - GCS URL (e.g., "gs://bucket/path/to/image.jpg")
+ * @returns true if file exists
+ */
+export async function fileExists(gcsUrl: string): Promise<boolean> {
+  try {
+    const bucket = getBucket()
+    const path = gcsUrl.replace(`gs://${BUCKET_NAME}/`, '')
+    const file = bucket.file(path)
+
+    const [exists] = await file.exists()
+    return exists
+  } catch (error) {
+    return false
+  }
+}
+
+/**
+ * Infer content type from file extension
+ */
+function inferContentType(url: string): string {
+  const ext = url.split('.').pop()?.toLowerCase()
+
+  switch (ext) {
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg'
+    case 'png':
+      return 'image/png'
+    case 'webp':
+      return 'image/webp'
+    case 'gif':
+      return 'image/gif'
+    default:
+      return 'image/jpeg'
+  }
+}
+
+/**
+ * Generate a destination path for a product image
+ *
+ * @param brand - Brand name (e.g., "KOHLER")
+ * @param sku - Product SKU
+ * @param imageIndex - Image index (1-based)
+ * @param extension - File extension (e.g., "jpg")
+ * @returns Destination path (e.g., "kohler/K-12345-1.jpg")
+ */
+export function generateImagePath(
+  brand: string,
+  sku: string,
+  imageIndex: number,
+  extension: string = 'jpg'
+): string {
+  const brandFolder = brand.toLowerCase().replace(/[^a-z0-9]/g, '-')
+  const safeSku = sku.replace(/[^a-zA-Z0-9-]/g, '-')
+  return `${brandFolder}/${safeSku}-${imageIndex}.${extension}`
 }

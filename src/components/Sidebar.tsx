@@ -6,23 +6,20 @@ import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
   Home,
-  FileSearch,
-  MessageSquare,
+  Search,
+  Package,
   FileText,
-  DollarSign,
-  Users,
-  CalendarDays,
+  Camera,
+  MessageSquare,
+  BarChart3,
   Settings,
   ChevronLeft,
   ChevronRight,
-  Brain,
-  Camera,
-  History,
-  HandshakeIcon,
-  FileCheck,
-  Presentation,
+  Briefcase,
+  Users,
   Sun,
-  Moon
+  Moon,
+  Database
 } from 'lucide-react'
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
@@ -46,31 +43,49 @@ export default function Sidebar({ isCollapsed = false, onToggle }: SidebarProps)
       title: 'Dashboard',
       icon: LayoutDashboard,
       href: '/dashboard',
-      description: 'Overview & KPIs'
+      description: 'Resumen y KPIs'
     },
     {
-      title: 'Claims',
-      icon: FileSearch,
-      href: '/dashboard/claims',
-      description: 'All claims & details'
+      title: 'Catálogo IA',
+      icon: Search,
+      href: '/dashboard/catalogo',
+      description: 'Consultor inteligente de productos'
     },
     {
-      title: 'Stella',
-      icon: Brain,
-      href: '/dashboard/assistant',
-      description: 'AI-powered claim assistant'
+      title: 'Diseño IA',
+      icon: Briefcase,
+      href: '/dashboard/diseno',
+      description: 'Especificación inteligente de proyectos'
     },
     {
-      title: 'Schedule',
-      icon: CalendarDays,
-      href: '/dashboard/inspection',
-      description: 'Schedule and manage inspections'
+      title: 'Inventario',
+      icon: Package,
+      href: '/dashboard/inventario',
+      description: 'Inteligencia de inventario'
     },
     {
-      title: 'Reports',
-      icon: FileCheck,
+      title: 'Documentación',
+      icon: FileText,
+      href: '/dashboard/documentation',
+      description: 'Documentos automatizados'
+    },
+    {
+      title: 'Control de Calidad',
+      icon: Camera,
+      href: '/dashboard/quality',
+      description: 'Validación de instalación'
+    },
+    {
+      title: 'ALMA',
+      icon: Database,
+      href: '/dashboard/analytics',
+      description: 'Analista de datos con IA'
+    },
+    {
+      title: 'Reportes',
+      icon: BarChart3,
       href: '/dashboard/reports',
-      description: 'Completed reports'
+      description: 'Analítica y reportes'
     }
   ]
 
@@ -86,18 +101,20 @@ export default function Sidebar({ isCollapsed = false, onToggle }: SidebarProps)
         <div className="flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-3">
             {isCollapsed ? (
-              <div className="w-10 h-10 bg-stellar-orange rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">S</span>
+              <div className="w-10 h-10 bg-alumimundo-navy rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">A</span>
               </div>
             ) : (
-              <Image
-                src="/images/stellar_logo.png"
-                alt="Stellar Adjusting"
-                width={360}
-                height={100}
-                className="w-auto h-auto max-w-[180px]"
-                priority
-              />
+              <div className="bg-alumimundo-navy dark:bg-transparent px-4 py-3 rounded-lg">
+                <Image
+                  src="/images/alumimundo_logo.png"
+                  alt="Alumimundo"
+                  width={360}
+                  height={100}
+                  className="w-auto h-auto max-w-[180px]"
+                  priority
+                />
+              </div>
             )}
           </Link>
           {onToggle && (
@@ -128,7 +145,7 @@ export default function Sidebar({ isCollapsed = false, onToggle }: SidebarProps)
                     flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all
                     ${isCollapsed ? 'justify-center' : ''}
                     ${isActive
-                      ? 'bg-stellar-orange text-white shadow-lg'
+                      ? 'bg-alumimundo-teal text-white shadow-lg'
                       : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'
                     }
                   `}
@@ -173,13 +190,13 @@ export default function Sidebar({ isCollapsed = false, onToggle }: SidebarProps)
         {/* Company Info */}
         {!isCollapsed ? (
           <div className="text-xs text-gray-500 dark:text-gray-400">
-            <p className="font-semibold mb-1">NO RECOVERY, NO FEE</p>
-            <p>Maximizing settlements with AI</p>
-            <p className="mt-2">© 2025 Stellar Adjusting</p>
+            <p className="font-semibold mb-1">ALUMIMUNDO S.A.</p>
+            <p>40 años liderando la industria</p>
+            <p className="mt-2">© 2024 Alumimundo</p>
           </div>
         ) : (
           <div className="text-center text-xs text-gray-500 dark:text-gray-400">
-            <p>© '25</p>
+            <p>© '24</p>
           </div>
         )}
       </div>

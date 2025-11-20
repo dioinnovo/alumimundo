@@ -2,50 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Alumimundo Brand Typography - Fivo Sans Font */
+/* Note: Add @font-face for Fivo Sans or use system fallback */
 @layer base {
   :root {
+    /* Alumimundo Brand Colors */
+    --alumimundo-navy: #082B61;
+    --alumimundo-teal: #276770;
+    --alumimundo-charcoal: #3C3C3B;
+    --alumimundo-dark: #1D1D1F;
+    --alumimundo-gray: #A5A6A7;
+    --alumimundo-light: #F1F1F3;
+    --alumimundo-slate: #69727D;
+    --alumimundo-magenta: #CC3366;
+    --alumimundo-whatsapp: #25D366;
+
+    /* Shadcn theme variables - updated for Alumimundo */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 15%; /* Charcoal */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 7 71% 56%; /* Stellar Orange */
-    --primary-foreground: 210 40% 98%;
+    --popover-foreground: 0 0% 15%;
+    --primary: 193 48% 33%; /* Alumimundo Teal */
+    --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary-foreground: 0 0% 15%;
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted-foreground: 207 10% 52%; /* Slate */
+    --accent: 193 48% 33%; /* Teal */
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 7 71% 56%;
-    --radius: 0.65rem;
+    --ring: 193 48% 33%; /* Teal */
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 7 71% 56%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --background: 0 0% 7%; /* Dark gray */
+    --foreground: 0 0% 95%; /* Light */
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 193 48% 33%; /* Teal */
+    --primary-foreground: 0 0% 100%;
     --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary-foreground: 0 0% 95%;
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --muted-foreground: 207 10% 52%;
+    --accent: 193 48% 33%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 7 71% 56%;
+    --ring: 193 48% 33%;
   }
 }
 
@@ -88,36 +102,62 @@
 }
 
 @layer utilities {
-  .text-stellar-orange {
-    color: rgb(231 76 60);
+  /* Alumimundo Brand Utility Classes */
+  .text-alumimundo-navy {
+    color: #082B61;
   }
-  
-  .text-stellar-dark {
-    color: rgb(44 62 80);
+
+  .text-alumimundo-teal {
+    color: #276770;
   }
-  
-  .bg-stellar-orange {
-    background-color: rgb(231 76 60);
+
+  .text-alumimundo-charcoal {
+    color: #3C3C3B;
   }
-  
-  .bg-stellar-dark {
-    background-color: rgb(44 62 80);
+
+  .bg-alumimundo-navy {
+    background-color: #082B61;
   }
-  
-  .border-stellar-orange {
-    border-color: rgb(231 76 60);
+
+  .bg-alumimundo-teal {
+    background-color: #276770;
   }
-  
-  .border-stellar-dark {
-    border-color: rgb(44 62 80);
+
+  .bg-alumimundo-charcoal {
+    background-color: #3C3C3B;
   }
-  
-  .hover\:bg-stellar-orange:hover {
-    background-color: rgb(231 76 60);
+
+  .bg-alumimundo-dark {
+    background-color: #1D1D1F;
   }
-  
-  .hover\:text-stellar-orange:hover {
-    color: rgb(231 76 60);
+
+  .bg-alumimundo-whatsapp {
+    background-color: #25D366;
+  }
+
+  .border-alumimundo-teal {
+    border-color: #276770;
+  }
+
+  .border-alumimundo-navy {
+    border-color: #082B61;
+  }
+
+  .hover\:bg-alumimundo-teal:hover {
+    background-color: #276770;
+  }
+
+  .hover\:text-alumimundo-teal:hover {
+    color: #276770;
+  }
+
+  .hover\:bg-alumimundo-whatsapp:hover {
+    background-color: #20BA5A;
+  }
+
+  /* Pill-shaped buttons (Alumimundo brand style) */
+  .btn-pill {
+    border-radius: 999px;
   }
   
   /* Hide scrollbar but keep functionality - only utility we keep */

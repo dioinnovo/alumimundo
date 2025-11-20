@@ -24,9 +24,9 @@ const SiriOrb: React.FC<SiriOrbProps> = ({
 }) => {
   const defaultColors = {
     bg: "transparent",
-    c1: "#E74C3C",  // Stellar Orange (primary)
-    c2: "#FF9A76",  // Peach (harmonious)
-    c3: "#FFC5BF",  // Soft Rose (gentle accent)
+    c1: "#276770",  // Alumimundo Teal (primary)
+    c2: "#082B61",  // Alumimundo Navy (depth)
+    c3: "#CC3366",  // Alumimundo Magenta (accent)
   }
 
   const finalColors = { ...defaultColors, ...colors }

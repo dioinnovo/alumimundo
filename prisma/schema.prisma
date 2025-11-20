@@ -1,4 +1,4 @@
-// This is your Prisma schema file,
+// This is your Prisma schema file for Alumimundo AI Platform
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
@@ -10,193 +10,466 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Claims table - Core claims data
-model Claim {
+// ============================================
+// CORE DOMAIN MODELS
+// ============================================
+
+// Projects table - Construction projects management
+model Project {
   id                String              @id @default(cuid())
-  claimNumber       String              @unique
-  type              String              // commercial or residential
-  status            ClaimStatus         @default(SUBMITTED)
+  projectNumber     String              @unique
+  name              String
+  type              ProjectType         @default(RESIDENTIAL)
+  status            ProjectStatus       @default(PLANNING)
   priority          Priority            @default(MEDIUM)
-  submittedAt       DateTime            @default(now())
+  createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
-  
-  // Property Information
-  propertyAddress   String
-  propertyType      String
-  policyNumber      String?
-  
-  // Damage Information
-  damageType        String              // Hurricane, Wind, Water, etc.
-  damageDescription String?
-  severity          String?             // Minor, Moderate, Major, Total Loss
-  
+  startDate         DateTime?
+  completionDate    DateTime?
+
+  // Project Information
+  location          String
+  address           String?
+  city              String?
+  province          String?             // San José, Guanacaste, etc.
+  country           String              @default("Costa Rica")
+
+  // Client Information
+  clientName        String
+  clientEmail       String
+  clientPhone       String
+  clientCompany     String?
+  architectName     String?
+  contractorName    String?
+
   // Financial Information
-  estimatedAmount   Float?
-  approvedAmount    Float?
-  deductible        Float?
-  
-  // Contact Information
-  insuredName       String
-  insuredEmail      String
-  insuredPhone      String
-  
-  // AI Analysis Results
-  aiConfidence      Float?
-  fraudScore        Float?
-  settlementScore   Float?
-  
+  budgetAmount      Float?
+  actualCost        Float?
+  currency          String              @default("CRC")
+
+  // Project Metadata
+  description       String?
+  notes             String?
+  squareMeters      Float?
+
+  // AI Analysis
+  complexityScore   Float?
+  riskScore         Float?
+
   // Relationships
+  specifications    Specification[]
   documents         Document[]
-  workflows         Workflow[]
-  notifications     Notification[]
-  enrichments       Enrichment[]
+  qualityChecks     QualityCheck[]
   activities        Activity[]
-  lead              Lead?
-  
+  inventoryItems    InventoryAllocation[]
+
   @@index([status])
   @@index([priority])
-  @@index([submittedAt])
-}
-
-// Documents table - File uploads and attachments
-model Document {
-  id              String          @id @default(cuid())
-  filename        String
-  originalName    String
-  mimeType        String
-  size            Int
-  url             String
-  uploadedAt      DateTime        @default(now())
-  
-  // Document Processing
-  ocrText         String?
-  metadata        String?         // JSON string
-  processedAt     DateTime?
-  
-  // Relationships
-  claimId         String
-  claim           Claim           @relation(fields: [claimId], references: [id], onDelete: Cascade)
-  
-  @@index([claimId])
-}
-
-// Workflows table - Workflow automation states
-model Workflow {
-  id              String          @id @default(cuid())
-  name            String
-  status          WorkflowStatus  @default(PENDING)
-  triggeredAt     DateTime        @default(now())
-  completedAt     DateTime?
-  
-  // Workflow Data
-  currentStep     String?
-  totalSteps      Int?
-  data            String?         // JSON string for workflow-specific data
-  
-  // Relationships
-  claimId         String
-  claim           Claim           @relation(fields: [claimId], references: [id], onDelete: Cascade)
-  
-  @@index([claimId])
-  @@index([status])
-}
-
-// CRM Leads table
-model Lead {
-  id              String          @id @default(cuid())
-  leadNumber      String          @unique
-  source          String          @default("Web Form")
-  status          LeadStatus      @default(NEW)
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  
-  // Lead Information
-  companyName     String?
-  contactName     String
-  email           String
-  phone           String
-  
-  // Lead Scoring
-  score           Int             @default(0)
-  qualification   String?         // Hot, Warm, Cold
-  
-  // Relationships
-  claimId         String?         @unique
-  claim           Claim?          @relation(fields: [claimId], references: [id])
-  
-  @@index([status])
+  @@index([type])
   @@index([createdAt])
 }
 
-// Notifications table - Email queue and history
-model Notification {
-  id              String              @id @default(cuid())
-  type            NotificationType
-  status          NotificationStatus  @default(PENDING)
-  recipient       String
-  subject         String
-  content         String              // HTML content
-  sentAt          DateTime?
-  failedAt        DateTime?
-  retryCount      Int                 @default(0)
-  createdAt       DateTime            @default(now())
-  
+// Specifications table - Product specifications per project
+model Specification {
+  id                String              @id @default(cuid())
+  specNumber        String              @unique
+  status            SpecificationStatus @default(DRAFT)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  approvedAt        DateTime?
+
+  // Specification Details
+  category          String              // Grifería, Cerraduras, Lavamanos, etc.
+  productFamily     String?             // KOHLER, Schlage, Kallista, etc.
+  quantity          Int
+  unitPrice         Float?
+  totalPrice        Float?
+
+  // Product Information
+  productSKU        String?
+  productName       String
+  productModel      String?
+  finish            String?             // Chrome, Brushed Nickel, Matte Black, etc.
+  specifications    String?             // JSON string with detailed specs
+
+  // Installation Details
+  installationNotes String?
+  installationDate  DateTime?
+  installerName     String?
+
+  // AI Recommendations
+  aiConfidence      Float?
+  alternatives      String?             // JSON array of alternative products
+
   // Relationships
-  claimId         String?
-  claim           Claim?              @relation(fields: [claimId], references: [id], onDelete: Cascade)
-  
+  projectId         String
+  project           Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
   @@index([status])
-  @@index([claimId])
+  @@index([category])
 }
 
-// Enrichments table - GraphRAG context storage
-model Enrichment {
-  id              String          @id @default(cuid())
-  type            String          // document, similar_claim, policy, risk
-  source          String          // GraphRAG, Manual, External API
-  content         String          // JSON string with enrichment data
-  confidence      Float?
-  createdAt       DateTime        @default(now())
-  
-  // Vector Embedding
-  embedding       String?         // JSON array of floats
-  
+// Products table - Complete product catalog (ENHANCED)
+model Product {
+  id                String              @id @default(cuid())
+  sku               String              @unique
+  name              String
+  nameEs            String?             // Spanish name
+  brand             String              // KOHLER, Schlage, Kallista, Steelcraft
+  category          String              // Grifería, Cerraduras, etc.
+  subcategory       String?
+
+  // Product Details
+  description       String?
+  descriptionEs     String?
+  specifications    String?             // JSON string
+  finish            String?
+  color             String?
+  material          String?
+
+  // Compliance & Certifications
+  isADACompliant    Boolean             @default(false)
+  isMarineGrade     Boolean             @default(false)
+  isWaterSense      Boolean             @default(false)
+  certifications    String?             // Comma-separated certification codes
+
+  // Environmental
+  isEcoFriendly     Boolean             @default(false)
+  sustainabilityRating Float?
+
+  // Pricing
+  costPrice         Float?
+  listPrice         Float?
+  currency          String              @default("CRC")
+  priceCRC          Float?
+  priceUSD          Float?
+
+  // Inventory
+  currentStock      Int                 @default(0)
+  minStock          Int                 @default(0)
+  maxStock          Int?
+  reorderPoint      Int?
+  leadTimeDays      Int                 @default(30)
+
+  // Product Metadata
+  weight            Float?              // in kg
+  dimensions        String?             // JSON: {length, width, height} in cm
+  imageUrl          String?             // Primary product image from GCS
+  dataSheetUrl      String?
+  installGuideUrl   String?
+  warrantyYears     Int?
+
+  // AI & Search
+  embedding         String?             // Vector embedding for similarity search
+  tags              String?             // Comma-separated tags
+  searchKeywords    String?             // Keywords for search
+
+  // Scraping Metadata
+  sourceUrl         String?             // Original product page URL
+  lastScrapedAt     DateTime?
+  scrapingEnabled   Boolean             @default(true)
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
   // Relationships
-  claimId         String
-  claim           Claim           @relation(fields: [claimId], references: [id], onDelete: Cascade)
-  
-  @@index([claimId])
+  providerId        String?
+  provider          Provider?           @relation(fields: [providerId], references: [id])
+  images            ProductImage[]
+  inventoryMovements InventoryMovement[]
+  allocations       InventoryAllocation[]
+
+  @@index([sku])
+  @@index([brand])
+  @@index([category])
+  @@index([name])
+  @@index([providerId])
+  @@index([isADACompliant])
+  @@index([isMarineGrade])
+}
+
+// Quality Checks table - Installation validation
+model QualityCheck {
+  id                String              @id @default(cuid())
+  checkNumber       String              @unique
+  type              QualityCheckType    @default(PRE_INSTALLATION)
+  status            QualityStatus       @default(PENDING)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  completedAt       DateTime?
+
+  // Check Details
+  area              String              // Bathroom 1, Kitchen, Main Entrance, etc.
+  productCategory   String
+  inspectorName     String?
+
+  // Quality Scores
+  overallScore      Float?
+  alignmentScore    Float?
+  finishScore       Float?
+  functionalityScore Float?
+
+  // Visual Inspection
+  photoUrls         String?             // JSON array of photo URLs
+  defectsFound      String?             // JSON array of defects
+  aiAnalysis        String?             // JSON with AI analysis results
+
+  // Approval
+  approved          Boolean             @default(false)
+  approvedBy        String?
+  rejectionReason   String?
+
+  // Relationships
+  projectId         String
+  project           Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([status])
   @@index([type])
 }
 
-// Activity table - Audit trail
-model Activity {
-  id              String          @id @default(cuid())
-  action          String
-  description     String
-  userId          String?
-  metadata        String?         // JSON string
-  createdAt       DateTime        @default(now())
-  
+// Documents table - Generated and uploaded documents
+model Document {
+  id                String              @id @default(cuid())
+  filename          String
+  originalName      String
+  mimeType          String
+  size              Int
+  url               String
+  uploadedAt        DateTime            @default(now())
+
+  // Document Type & Processing
+  documentType      DocumentType        @default(OTHER)
+  ocrText           String?
+  metadata          String?             // JSON string
+  processedAt       DateTime?
+
+  // AI Generation
+  generatedByAI     Boolean             @default(false)
+  generationPrompt  String?
+
   // Relationships
-  claimId         String
-  claim           Claim           @relation(fields: [claimId], references: [id], onDelete: Cascade)
-  
-  @@index([claimId])
+  projectId         String
+  project           Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([documentType])
+}
+
+// Inventory Movements table - Track stock changes
+model InventoryMovement {
+  id                String              @id @default(cuid())
+  movementNumber    String              @unique
+  type              MovementType
+  quantity          Int
+
+  // Movement Details
+  reason            String?
+  notes             String?
+  reference         String?             // PO number, invoice number, etc.
+
+  // Cost tracking
+  unitCost          Float?
+  totalCost         Float?
+
+  createdAt         DateTime            @default(now())
+  createdBy         String?
+
+  // Relationships
+  productId         String
+  product           Product             @relation(fields: [productId], references: [id])
+
+  @@index([productId])
+  @@index([type])
   @@index([createdAt])
 }
 
-// Enums
-enum ClaimStatus {
-  SUBMITTED
-  TRIAGING
-  UNDER_REVIEW
-  PENDING_DOCUMENTS
-  ESTIMATING
-  APPROVED
-  DENIED
-  SETTLED
-  CLOSED
+// Inventory Allocations table - Reserve stock for projects
+model InventoryAllocation {
+  id                String              @id @default(cuid())
+  quantity          Int
+  status            AllocationStatus    @default(RESERVED)
+
+  allocatedAt       DateTime            @default(now())
+  releasedAt        DateTime?
+
+  notes             String?
+
+  // Relationships
+  projectId         String
+  project           Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  productId         String
+  product           Product             @relation(fields: [productId], references: [id])
+
+  @@index([projectId])
+  @@index([productId])
+  @@index([status])
+}
+
+// Providers/Manufacturers table - Track product sources
+model Provider {
+  id                String              @id @default(cuid())
+  name              String              @unique  // KOHLER, Tarkett, Schlage
+  nameEs            String?             // Spanish name if different
+  website           String?
+  country           String?
+
+  // Contact Information
+  contactEmail      String?
+  contactPhone      String?
+  salesRepName      String?
+
+  // Scraping Metadata
+  catalogUrl        String?             // Main catalog/products page URL
+  lastScrapedAt     DateTime?
+  scrapingEnabled   Boolean             @default(true)
+  scrapingFrequency String?             // daily, weekly, monthly
+
+  // Business Information
+  accountNumber     String?
+  paymentTerms      String?
+  shippingMethod    String?
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  // Relationships
+  products          Product[]
+  scrapeLogs        ScrapeLog[]
+
+  @@index([name])
+}
+
+// Product Images table - Multiple images per product stored in GCS
+model ProductImage {
+  id                String              @id @default(cuid())
+  productId         String
+  product           Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  // Image Details
+  url               String              // GCS URL: gs://alumimundo_inventory/...
+  publicUrl         String?             // Public HTTPS URL
+  altText           String?
+  caption           String?
+  displayOrder      Int                 @default(0)
+
+  // Image Type
+  imageType         ProductImageType    @default(PRODUCT_PHOTO)
+
+  // Metadata
+  width             Int?
+  height            Int?
+  fileSize          Int?                // in bytes
+  mimeType          String?
+
+  uploadedAt        DateTime            @default(now())
+
+  @@index([productId])
+  @@index([imageType])
+}
+
+// Scrape Logs table - Track scraping history
+model ScrapeLog {
+  id                String              @id @default(cuid())
+  providerId        String
+  provider          Provider            @relation(fields: [providerId], references: [id])
+
+  // Scrape Details
+  status            ScrapeStatus        @default(IN_PROGRESS)
+  productsFound     Int                 @default(0)
+  productsAdded     Int                 @default(0)
+  productsUpdated   Int                 @default(0)
+  imagesDownloaded  Int                 @default(0)
+
+  // Execution Details
+  startedAt         DateTime            @default(now())
+  completedAt       DateTime?
+  duration          Int?                // in seconds
+
+  // Error Handling
+  errors            String?             // JSON array of errors
+  errorMessage      String?
+
+  // Metadata
+  scrapedBy         String?             // User or system
+  notes             String?
+
+  @@index([providerId])
+  @@index([status])
+  @@index([startedAt])
+}
+
+// Activity table - Audit trail for all models
+model Activity {
+  id                String              @id @default(cuid())
+  action            String
+  description       String
+  userId            String?
+  userEmail         String?
+  metadata          String?             // JSON string
+  createdAt         DateTime            @default(now())
+
+  // Relationships
+  projectId         String?
+  project           Project?            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+// Users table - User management
+model User {
+  id                String              @id @default(cuid())
+  email             String              @unique
+  name              String
+  role              UserRole            @default(USER)
+
+  // Authentication
+  passwordHash      String?
+  emailVerified     Boolean             @default(false)
+
+  // Profile
+  phone             String?
+  company           String?
+  position          String?
+
+  // Metadata
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  lastLoginAt       DateTime?
+
+  // Relationships
+  designProjects    DesignProject[]
+
+  @@index([email])
+  @@index([role])
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum ProjectType {
+  RESIDENTIAL
+  COMMERCIAL
+  HOSPITALITY
+  INDUSTRIAL
+  GOVERNMENT
+  MIXED_USE
+}
+
+enum ProjectStatus {
+  PLANNING
+  SPECIFICATION
+  PURCHASING
+  IN_PROGRESS
+  INSTALLATION
+  QUALITY_CHECK
+  COMPLETED
+  ON_HOLD
+  CANCELLED
 }
 
 enum Priority {
@@ -206,34 +479,563 @@ enum Priority {
   URGENT
 }
 
-enum WorkflowStatus {
+enum SpecificationStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  ORDERED
+  DELIVERED
+  INSTALLED
+  REJECTED
+}
+
+enum QualityCheckType {
+  PRE_INSTALLATION
+  DURING_INSTALLATION
+  POST_INSTALLATION
+  WARRANTY_INSPECTION
+  MAINTENANCE_CHECK
+}
+
+enum QualityStatus {
   PENDING
   IN_PROGRESS
-  COMPLETED
+  PASSED
   FAILED
+  REQUIRES_REWORK
+}
+
+enum DocumentType {
+  SPECIFICATION
+  QUOTE
+  PURCHASE_ORDER
+  INVOICE
+  INSTALLATION_GUIDE
+  TECHNICAL_DRAWING
+  PHOTO
+  WARRANTY
+  CERTIFICATE
+  OTHER
+}
+
+enum MovementType {
+  PURCHASE
+  SALE
+  ADJUSTMENT
+  DAMAGE
+  RETURN
+  TRANSFER
+}
+
+enum AllocationStatus {
+  RESERVED
+  ALLOCATED
+  RELEASED
   CANCELLED
 }
 
-enum LeadStatus {
-  NEW
-  CONTACTED
-  QUALIFIED
-  CONVERTED
-  LOST
+enum UserRole {
+  ADMIN
+  MANAGER
+  TECHNICAL_ADVISOR
+  ARCHITECT
+  INSTALLER
+  USER
 }
 
-enum NotificationType {
-  CLAIM_SUBMITTED
-  CLAIM_APPROVED
-  CLAIM_DENIED
-  DOCUMENT_REQUESTED
-  ESTIMATE_READY
-  SETTLEMENT_OFFERED
+enum ProductImageType {
+  PRODUCT_PHOTO
+  LIFESTYLE
+  INSTALLATION
+  DETAIL
+  DIMENSION
+  FINISH_SAMPLE
+  TECHNICAL_DRAWING
 }
 
-enum NotificationStatus {
-  PENDING
-  SENT
+enum ScrapeStatus {
+  IN_PROGRESS
+  COMPLETED
   FAILED
-  BOUNCED
+  PARTIAL
+}
+
+// ============================================
+// DESIGN WORKFLOW MODELS (Intelligent Specification & Design Assistant)
+// ============================================
+
+// Design Projects table - AI-powered property redesign/construction projects
+model DesignProject {
+  id                String              @id @default(cuid())
+  userId            String
+  name              String
+  propertyType      PropertyType        @default(RESIDENTIAL)
+  location          String              // For compliance and climate considerations
+  budgetRange       BudgetRange?
+  status            DesignProjectStatus @default(DRAFT)
+
+  // Project Metadata
+  description       String?
+  notes             String?
+  totalEstimate     Float?              // Total cost estimate
+  currency          String              @default("CRC")
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  completedAt       DateTime?
+
+  // Relationships
+  user              User                @relation(fields: [userId], references: [id])
+  areas             DesignArea[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Design Areas table - Individual areas/rooms within a design project
+model DesignArea {
+  id                  String                @id @default(cuid())
+  projectId           String
+  areaType            AreaType              // Kitchen, bathroom, etc.
+  areaName            String                // Custom name: "Main Kitchen", "Master Bathroom"
+  status              AreaStatus            @default(NOT_STARTED)
+
+  // Requirements & Context
+  userRequirements    String?               // Voice/text input from user
+  voiceTranscript     String?               // Raw transcript from speech-to-text
+  visionAnalysis      String?               // JSON with AI vision analysis of uploaded images
+
+  // Cost Estimation
+  estimatedCost       Float?
+  materialsCost       Float?
+  laborCost           Float?
+  confidenceLevel     Float?                // AI confidence in estimate (0-1)
+
+  // Metadata
+  notes               String?
+  squareMeters        Float?
+
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  // Relationships
+  project             DesignProject         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  images              AreaImage[]
+  specifications      AreaSpecification[]
+
+  @@index([projectId])
+  @@index([status])
+  @@index([areaType])
+}
+
+// Area Images table - Photos uploaded for each area
+model AreaImage {
+  id                String              @id @default(cuid())
+  areaId            String
+
+  // Image Storage
+  imageUrl          String              // Stored in public/uploads or cloud storage
+  imageName         String
+  thumbnailUrl      String?
+
+  // Image Metadata
+  fileSize          Int?                // in bytes
+  mimeType          String?
+  width             Int?
+  height            Int?
+
+  // AI Analysis
+  visionAnalysis    String?             // JSON with detected materials, colors, style, dimensions
+  detectedItems     String?             // JSON array of detected items (faucet, countertop, etc.)
+  aiTags            String?             // Comma-separated tags for search
+
+  uploadedAt        DateTime            @default(now())
+
+  // Relationships
+  area              DesignArea          @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  @@index([areaId])
+}
+
+// Area Specifications table - Products/materials selected for each area
+model AreaSpecification {
+  id                String              @id @default(cuid())
+  areaId            String
+
+  // Product Information
+  productSku        String
+  productName       String
+  brand             String              // KOHLER, Schlage, etc.
+  category          String              // Grifería, Pisos, etc.
+  subcategory       String?
+
+  // Quantity & Pricing
+  quantity          Float               // Can be decimal for materials (sq ft, linear ft)
+  unit              String              @default("unit") // unit, sq_ft, linear_ft, sq_m
+  unitPrice         Float
+  totalPrice        Float
+
+  // Additional Details
+  finish            String?             // Chrome, Matte Black, etc.
+  color             String?
+  specifications    String?             // JSON with detailed specs
+  notes             String?
+
+  // AI Recommendation
+  recommendedByAI   Boolean             @default(false)
+  aiConfidence      Float?              // 0-1 confidence score
+  alternatives      String?             // JSON array of alternative product SKUs
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  // Relationships
+  area              DesignArea          @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  @@index([areaId])
+  @@index([productSku])
+  @@index([category])
+}
+
+// ============================================
+// DESIGN WORKFLOW ENUMS
+// ============================================
+
+enum PropertyType {
+  RESIDENTIAL
+  COMMERCIAL
+  INSTITUTIONAL
+  HOSPITALITY
+  MIXED_USE
+}
+
+enum BudgetRange {
+  LOW           // Budget-conscious
+  MEDIUM        // Mid-range
+  HIGH          // Premium
+  LUXURY        // Ultra-premium
+}
+
+enum DesignProjectStatus {
+  DRAFT
+  IN_PROGRESS
+  REVIEW
+  COMPLETED
+  ARCHIVED
+}
+
+enum AreaType {
+  KITCHEN
+  BATHROOM
+  MASTER_BATHROOM
+  GUEST_BATHROOM
+  LIVING_ROOM
+  DINING_ROOM
+  BEDROOM
+  MASTER_BEDROOM
+  ENTRANCE
+  HALLWAY
+  OFFICE
+  LAUNDRY
+  OUTDOOR
+  PATIO
+  GARAGE
+  OTHER
+}
+
+enum AreaStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SPECIFICATION_COMPLETE
+  REVIEWED
+  APPROVED
+  SKIPPED
+}
+
+// ============================================
+// BUDGET ESTIMATION MODELS (Door & Hardware Budget System)
+// ============================================
+
+// Budget Estimations - Architectural drawing-based door/hardware budgets
+model BudgetEstimation {
+  id                String              @id @default(cuid())
+  projectNumber     String              @unique
+  projectName       String
+  clientName        String
+  clientEmail       String?
+  clientPhone       String?
+
+  // Property Information
+  propertyType      PropertyType        @default(RESIDENTIAL)
+  location          String
+  address           String?
+  city              String?
+  province          String?
+
+  // Project Details
+  status            EstimationStatus    @default(DRAFT)
+  totalDoors        Int                 @default(0)
+  totalHardware     Int                 @default(0)
+  totalCost         Float?
+  currency          String              @default("CRC")
+
+  // Blueprint Information
+  blueprintScale    String?             // "1:100", "1/4\" = 1'"
+  sourceFormat      String?             // "PDF", "DWG", "DXF"
+  togalProjectId    String?             // Togal.AI project ID if using their API
+
+  // Timeline
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  completedAt       DateTime?
+
+  // Metadata
+  notes             String?
+
+  // Relationships
+  items             EstimationItem[]
+  documents         EstimationDocument[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([propertyType])
+}
+
+// Estimation Items - Individual doors and hardware components
+model EstimationItem {
+  id                String              @id @default(cuid())
+  estimationId      String
+  estimation        BudgetEstimation    @relation(fields: [estimationId], references: [id], onDelete: Cascade)
+
+  // Item Classification
+  itemType          ItemType            // DOOR, HINGE, LOCK, etc.
+  doorType          DoorType?           // For doors only
+
+  // Location Information
+  locationId        String
+  location          ItemLocation        @relation(fields: [locationId], references: [id])
+
+  // Product Specification
+  productSku        String?
+  productName       String
+  brand             String?             // Schlage, Steelcraft, etc.
+  finish            String?
+  specifications    String?             // JSON with detailed specs
+
+  // Dimensions (store both metric and imperial for catalog matching)
+  dimensionMetric   String?             // "90cm × 210cm"
+  dimensionImperial String?             // "36\" × 84\""
+  dimensionWidth    Float?              // Normalized width (in cm)
+  dimensionHeight   Float?              // Normalized height (in cm)
+  dimensionUnit     String?             // "CM" or "INCH" - base unit used
+
+  // Quantity & Pricing
+  quantity          Int                 @default(1)
+  unitPrice         Float?
+  totalPrice        Float?
+
+  // AI Detection Metadata
+  detectedByAI      Boolean             @default(false)
+  aiConfidence      Float?              // 0-1 confidence score
+  detectionSource   String?             // "TOGAL_AI", "CAD_PARSING", "MANUAL"
+  catalogMatch      String?             // JSON: matched products with confidence scores
+  manuallyReviewed  Boolean             @default(false)
+
+  // Installation
+  installationStatus InstallationStatus @default(NOT_STARTED)
+  installedAt       DateTime?
+  installedBy       String?
+  photoUrl          String?             // Verification photo
+  notes             String?
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@index([estimationId])
+  @@index([itemType])
+  @@index([doorType])
+  @@index([locationId])
+  @@index([installationStatus])
+}
+
+// Item Locations - Floor, area, and door mark tracking
+model ItemLocation {
+  id                String              @id @default(cuid())
+  floor             String              // "F1", "F2", "Planta Baja", "Ground Floor"
+  area              String              // "Cocina", "Habitación 1", "Entrance"
+  mark              String              // "P-1-F1", "Door-1-F2", "D-101"
+  fullLocation      String              // "F2 - Habitación Principal - P-1-F2"
+
+  // Drawing Coordinates (optional)
+  drawingX          Float?
+  drawingY          Float?
+  drawingPage       Int?                // PDF page number where detected
+
+  // Metadata
+  notes             String?
+
+  // Relationships
+  items             EstimationItem[]
+
+  @@unique([floor, area, mark])
+  @@index([floor])
+  @@index([area])
+}
+
+// Manufacturer Product Catalog - For catalog matching and pricing
+model ManufacturerProduct {
+  id                String              @id @default(cuid())
+
+  // Manufacturer Information
+  manufacturer      String              // "Schlage", "Steelcraft", "KOHLER", etc.
+  sku               String              @unique
+  productName       String
+  category          String              // "Doors", "Locks", "Hinges", "Faucets", etc.
+  subcategory       String?
+
+  // Dimensions (store both metric and imperial for flexible matching)
+  widthMetric       Float?              // Width in cm
+  heightMetric      Float?              // Height in cm
+  depthMetric       Float?              // Depth/thickness in cm
+  widthImperial     Float?              // Width in inches
+  heightImperial    Float?              // Height in inches
+  depthImperial     Float?              // Depth/thickness in inches
+
+  // Product Details
+  material          String?             // "Steel", "Aluminum", "Wood", etc.
+  finish            String?             // "Satin Chrome", "Oil Rubbed Bronze", etc.
+  color             String?
+
+  // Pricing (Costa Rica - CRC)
+  unitPrice         Float               // Price in CRC
+  currency          String              @default("CRC")
+  priceEffectiveDate DateTime?          // When this price became effective
+
+  // Specifications
+  specifications    String?             // JSON: detailed technical specs
+  installationNotes String?
+  isADACompliant    Boolean             @default(false)
+  isMarineGrade     Boolean             @default(false)
+
+  // Availability
+  leadTimeDays      Int?                // Manufacturing/delivery lead time
+  inStock           Boolean             @default(true)
+  stockQuantity     Int?
+
+  // Metadata
+  catalogPage       String?             // Page number in manufacturer catalog
+  catalogYear       Int?
+  imageUrl          String?
+  pdfUrl            String?             // Product spec sheet URL
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@index([manufacturer])
+  @@index([category])
+  @@index([sku])
+  @@index([productName])
+}
+
+// Estimation Documents - Uploaded drawings and generated reports
+model EstimationDocument {
+  id                String              @id @default(cuid())
+  estimationId      String
+  estimation        BudgetEstimation    @relation(fields: [estimationId], references: [id], onDelete: Cascade)
+
+  // File Information
+  filename          String
+  originalName      String
+  mimeType          String
+  size              Int
+  url               String
+
+  // Document Type
+  documentType      EstimationDocType   @default(ARCHITECTURAL_DRAWING)
+
+  // PDF Parsing Results (for architectural drawings)
+  pageCount         Int?
+  extractedText     String?             // Text annotations from drawing
+  detectedItems     String?             // JSON array of AI-detected items
+  parseStatus       String?             // PENDING, COMPLETED, FAILED
+  parseError        String?
+
+  uploadedAt        DateTime            @default(now())
+  processedAt       DateTime?
+
+  @@index([estimationId])
+  @@index([documentType])
+}
+
+// ============================================
+// BUDGET ESTIMATION ENUMS
+// ============================================
+
+enum EstimationStatus {
+  DRAFT
+  UPLOADED
+  PARSING
+  REVIEWED
+  SPECIFIED
+  COMPLETED
+  ARCHIVED
+}
+
+enum ItemType {
+  DOOR
+  HINGE
+  LOCK
+  DEADBOLT
+  HANDLE
+  LEVER
+  KNOB
+  CLOSER
+  PANIC_BAR
+  THRESHOLD
+  WEATHERSTRIP
+  PEEPHOLE
+  KICKPLATE
+  DOOR_STOP
+  ASTRAGAL
+  SWEEP
+  OTHER
+}
+
+enum DoorType {
+  INTERIOR_SINGLE
+  INTERIOR_DOUBLE
+  EXTERIOR_SINGLE
+  EXTERIOR_DOUBLE
+  FIRE_RATED_60MIN
+  FIRE_RATED_90MIN
+  FIRE_RATED_120MIN
+  SLIDING
+  BIFOLD
+  POCKET
+  COMMERCIAL_STEEL
+  GLASS
+  ALUMINUM
+  WOOD
+  COMPOSITE
+}
+
+enum InstallationStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  INSTALLED
+  VERIFIED
+  ISSUE_REPORTED
+  REWORK_REQUIRED
+}
+
+enum EstimationDocType {
+  ARCHITECTURAL_DRAWING
+  AUTOCAD_PDF
+  BUDGET_REPORT
+  INSTALLATION_MANUAL
+  PRODUCT_SPEC
+  QR_CODE_SHEET
+  PHOTO
+  OTHER
 }

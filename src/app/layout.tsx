@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import DisableGrammarly from '@/components/DisableGrammarly'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,21 +14,29 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Stellar Intelligence Platform',
-  description: 'AI-Powered Public Adjusting Revolution',
-  keywords: 'insurance, claims, AI, public adjusting, settlement, damage assessment',
-  authors: [{ name: 'Stellar Adjusting Services' }],
+  title: 'Alumimundo AI Platform',
+  description: 'Plataforma de IA para especificación de acabados de construcción - Costa Rica',
+  keywords: 'construcción, acabados, KOHLER, especificación, IA, arquitectura, diseño, Costa Rica, inventario inteligente',
+  authors: [{ name: 'Alumimundo S.A.' }],
   icons: {
-    icon: '/images/stellar_logo.png',
-    shortcut: '/images/stellar_logo.png',
-    apple: '/images/stellar_logo.png',
+    icon: '/images/alumimundo_favicon.png',
+    shortcut: '/images/alumimundo_favicon.png',
+    apple: '/images/alumimundo_favicon.png',
   },
   openGraph: {
-    title: 'Stellar Intelligence Platform',
-    description: 'Find $80,000+ in Overlooked Coverage in 3 Minutes',
+    title: 'Alumimundo AI Platform - Transforme su especificación con IA',
+    description: '40 años liderando la industria en acabados de construcción. La primera plataforma de IA para especificación de productos en Centroamérica.',
     type: 'website',
-    locale: 'en_US',
-    siteName: 'Stellar Intelligence Platform',
+    locale: 'es_CR',
+    siteName: 'Alumimundo AI Platform',
+    images: [
+      {
+        url: '/images/alumimundo_logo.png',
+        width: 1024,
+        height: 576,
+        alt: 'Alumimundo Logo',
+      },
+    ],
   },
 }
 
@@ -37,11 +46,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
-        <DisableGrammarly />
-        {children}
-        <SpeedInsights />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <DisableGrammarly />
+          {children}
+          <SpeedInsights />
+        </ThemeProvider>
       </body>
     </html>
   )

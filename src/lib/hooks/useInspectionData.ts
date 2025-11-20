@@ -85,8 +85,142 @@ export function useInspectionData(inspectionId: string) {
     }
 
     try {
-      // Special handling for demo inspection INS-002
-      if (inspectionId === 'INS-002') {
+      // Special handling for demo inspections
+      if (inspectionId === 'QA-002') {
+        // Quality Assurance inspection for Hotel Boutique Tamarindo
+        const qaAreas: InspectionArea[] = [
+          {
+            id: 'lobby-entrance',
+            name: 'Lobby y Entrada Principal',
+            category: 'Áreas Comunes',
+            status: 'completed',
+            photoCount: 8,
+            notesCount: 2,
+            findings: 'Instalación correcta de cerraduras Schlage en puertas principales. Acabados KOHLER en recepción cumplen especificaciones.',
+            damageDescription: '',
+            recommendedActions: '',
+            estimatedCost: 0,
+            priority: 'low',
+            media: []
+          },
+          {
+            id: 'restaurant-area',
+            name: 'Restaurante y Bar',
+            category: 'Áreas Comunes',
+            status: 'completed',
+            photoCount: 12,
+            notesCount: 3,
+            findings: 'Grifería KOHLER en bar instalada correctamente. Acabados en mesas y paredes según especificación.',
+            damageDescription: '',
+            recommendedActions: '',
+            estimatedCost: 0,
+            priority: 'low',
+            media: []
+          },
+          {
+            id: 'rooms-floor1',
+            name: 'Habitaciones - Piso 1',
+            category: 'Habitaciones',
+            status: 'completed',
+            photoCount: 15,
+            notesCount: 4,
+            findings: 'Instalación de productos KOHLER en baños completa. Cerraduras Schlage funcionando correctamente en todas las puertas.',
+            damageDescription: '',
+            recommendedActions: '',
+            estimatedCost: 0,
+            priority: 'low',
+            media: []
+          },
+          {
+            id: 'common-areas',
+            name: 'Áreas Comunes y Pasillos',
+            category: 'Áreas Comunes',
+            status: 'completed',
+            photoCount: 6,
+            notesCount: 1,
+            findings: 'Acabados en pasillos y áreas comunes según especificación. Iluminación adecuada.',
+            damageDescription: '',
+            recommendedActions: '',
+            estimatedCost: 0,
+            priority: 'low',
+            media: []
+          },
+          {
+            id: 'rooms-floor2',
+            name: 'Habitaciones - Piso 2',
+            category: 'Habitaciones',
+            status: 'in_progress',
+            photoCount: 6,
+            notesCount: 1,
+            findings: 'Inspección en progreso. Hasta ahora todo conforme.',
+            damageDescription: '',
+            recommendedActions: '',
+            estimatedCost: 0,
+            priority: 'medium',
+            media: []
+          },
+          {
+            id: 'spa-wellness',
+            name: 'Spa y Wellness',
+            category: 'Amenidades',
+            status: 'not_started',
+            photoCount: 0,
+            notesCount: 0,
+            findings: '',
+            damageDescription: '',
+            recommendedActions: '',
+            estimatedCost: 0,
+            priority: 'low',
+            media: []
+          },
+          {
+            id: 'pool-terrace',
+            name: 'Piscina y Terraza',
+            category: 'Exteriores',
+            status: 'not_started',
+            photoCount: 0,
+            notesCount: 0,
+            findings: '',
+            damageDescription: '',
+            recommendedActions: '',
+            estimatedCost: 0,
+            priority: 'low',
+            media: []
+          },
+          {
+            id: 'service-areas',
+            name: 'Áreas de Servicio',
+            category: 'Servicios',
+            status: 'not_started',
+            photoCount: 0,
+            notesCount: 0,
+            findings: '',
+            damageDescription: '',
+            recommendedActions: '',
+            estimatedCost: 0,
+            priority: 'low',
+            media: []
+          }
+        ]
+
+        const completedCount = qaAreas.filter(a => a.status === 'completed' || a.status === 'skipped').length
+        const completionPercentage = Math.round((completedCount / qaAreas.length) * 100)
+
+        const qaData: InspectionData = {
+          id: inspectionId,
+          property: {
+            address: 'Playa Tamarindo, Guanacaste',
+            type: 'commercial',
+            owner: 'Desarrollos Costeros S.A.',
+          },
+          areas: qaAreas,
+          createdAt: '2024-11-19T14:00:00Z',
+          updatedAt: new Date().toISOString(),
+          completionPercentage
+        }
+
+        setInspectionData(qaData)
+      } else if (inspectionId === 'INS-002') {
         // Define correct order based on DEFAULT_RESIDENTIAL_AREAS
         const correctOrder = [
           'exterior-roof',
