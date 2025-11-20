@@ -128,8 +128,8 @@ Unified AI-powered customer interface across web, mobile, and WhatsApp.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-org/alumimundo-ai-platform.git
-cd alumimundo-ai-platform
+git clone https://github.com/dioinnovo/alumimundo.git
+cd alumimundo
 ```
 
 ### 2. Install Dependencies
@@ -430,22 +430,99 @@ pm2 startup
 pm2 save
 ```
 
+## 🔄 Continuous Integration
+
+This project uses GitHub Actions for automated testing and quality checks.
+
+### Automated Workflows
+
+#### CI/CD Pipeline (`.github/workflows/ci.yml`)
+Runs on every push and pull request to `main` and `develop` branches:
+
+1. **Lint & Type Check**
+   - ESLint code quality checks
+   - TypeScript type validation
+
+2. **Build**
+   - Next.js production build
+   - Dependency caching with pnpm
+   - Build artifact uploads
+
+3. **Security Scan**
+   - Trivy vulnerability scanner
+   - SARIF security reports
+
+4. **Dependency Review** (PRs only)
+   - Checks for vulnerable dependencies
+   - Prevents insecure packages
+
+### Dependabot
+
+Automated dependency updates run weekly:
+- npm/pnpm package updates
+- GitHub Actions version updates
+- Auto-created PRs with security patches
+
+See [.github/README.md](.github/README.md) for complete CI/CD documentation.
+
 ## 📚 Documentation
 
 - **Product Requirements**: [docs/prd_alumimundo.md](docs/prd_alumimundo.md)
 - **Research Analysis**: [docs/alumimundo_ai_research_part1.md](docs/alumimundo_ai_research_part1.md)
 - **Design System**: [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md)
 - **AI Assistant Context**: [CLAUDE.md](CLAUDE.md)
+- **GitHub Workflows**: [.github/README.md](.github/README.md)
 
 ## 🤝 Contributing
 
 We welcome contributions! Please follow these guidelines:
 
+### Getting Started
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/alumimundo.git`
+3. Create a feature branch: `git checkout -b feature/amazing-feature`
+4. Install dependencies: `pnpm install`
+
+### Development Workflow
+1. Make your changes following our coding standards
+2. Test locally: `pnpm dev`
+3. Run linting: `pnpm lint`
+4. Commit with descriptive messages:
+   ```bash
+   git commit -m "feat: Add amazing feature"
+   # or
+   git commit -m "fix: Resolve issue with..."
+   ```
+5. Push to your fork: `git push origin feature/amazing-feature`
+6. Open a Pull Request against `main` branch
+
+### Commit Message Convention
+We use conventional commits for better changelog generation:
+- `feat:` New features
+- `fix:` Bug fixes
+- `docs:` Documentation changes
+- `style:` Code style changes (formatting, etc.)
+- `refactor:` Code refactoring
+- `test:` Test additions or updates
+- `chore:` Maintenance tasks
+- `ci:` CI/CD configuration changes
+
+### Pull Request Process
+1. Fill out the PR template completely
+2. Ensure all CI checks pass (lint, type check, build)
+3. Request review from maintainers
+4. Address any feedback
+5. Wait for approval and merge
+
+### Code Standards
+- TypeScript for all new code
+- Functional components with hooks (React)
+- Tailwind CSS for styling (no inline styles)
+- Follow existing patterns and conventions
+- Add JSDoc comments for complex functions
+- Write unit tests for new features
+
+See [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md) for detailed PR guidelines.
 
 ## 🐛 Troubleshooting
 
