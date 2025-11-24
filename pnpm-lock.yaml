@@ -42,8 +42,8 @@ importers:
         specifier: ^5.4.8
         version: 5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       '@pdfme/generator':
-        specifier: ^5.4.8
-        version: 5.4.8(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)))(@pdfme/schemas@5.4.8(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))))
+        specifier: ^5.5.1
+        version: 5.5.1(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)))(@pdfme/schemas@5.4.8(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))))
       '@pdfme/schemas':
         specifier: ^5.4.8
         version: 5.4.8(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)))
@@ -1120,14 +1120,17 @@ packages:
       antd: ^5.11.2
       form-render: ^2.2.20
 
-  '@pdfme/generator@5.4.8':
-    resolution: {integrity: sha512-gyDniNB2nup0NmqZvAucNDn6MjTE6mF06qcg15HthYCJ7V39ug2ZCZuKfAUpT0L/yiB4Y+faYAmI9yOMJ2jF1w==}
+  '@pdfme/generator@5.5.1':
+    resolution: {integrity: sha512-GZbFKGxq1MMxSrgAEg2BP52zUOzbatF0CM55X3oDugLLxB/NZFBUU/GYX+pPB2rzmGXsyJ3ouRk1ZXILr2SPTw==}
     peerDependencies:
       '@pdfme/common': latest
       '@pdfme/schemas': latest
 
   '@pdfme/pdf-lib@5.4.7':
     resolution: {integrity: sha512-36nsEJmmoFNHtBT7vXEgBUbFaauyAfe7HBP1VSgt64yx/h8VdOAOt3bW1aAP0C3ZyV8fh9Nudmq4wgbbkoVrug==}
+
+  '@pdfme/pdf-lib@5.5.1':
+    resolution: {integrity: sha512-pkaODQCKFRlnKPqPv4dE0dugujliDTFELisp7W7P59dzqhCyg8yLjtACv8q/qj+LkEvjAlhRNmePrIsslEg/mQ==}
 
   '@pdfme/schemas@5.4.8':
     resolution: {integrity: sha512-gJSNoQ08Wi/aMkIzqoFaA31O83z4ohfeBCsKg/kbc+wYakgkJxRiZR/UVab0eq06Oiv8kMOJfNAwUMrnyc37iQ==}
@@ -2625,6 +2628,9 @@ packages:
 
   csstype@3.2.2:
     resolution: {integrity: sha512-D80T+tiqkd/8B0xNlbstWDG4x6aqVfO52+OlSUNIdkTvmNw0uQpJLeos2J/2XvpyidAFuTPmpad+tUxLndwj6g==}
+
+  csstype@3.2.3:
+    resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
   d3-array@3.2.4:
     resolution: {integrity: sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==}
@@ -5853,7 +5859,7 @@ snapshots:
       '@emotion/hash': 0.8.0
       '@emotion/unitless': 0.7.5
       classnames: 2.5.1
-      csstype: 3.2.2
+      csstype: 3.2.3
       rc-util: 5.44.4(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
@@ -6601,14 +6607,22 @@ snapshots:
       form-render: 2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       zod: 4.1.12
 
-  '@pdfme/generator@5.4.8(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)))(@pdfme/schemas@5.4.8(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))))':
+  '@pdfme/generator@5.5.1(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)))(@pdfme/schemas@5.4.8(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))))':
     dependencies:
       '@pdfme/common': 5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
-      '@pdfme/pdf-lib': 5.4.7
+      '@pdfme/pdf-lib': 5.5.1
       '@pdfme/schemas': 5.4.8(@pdfme/common@5.4.8(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(form-render@2.5.6(@types/react@18.3.26)(antd@5.28.1(date-fns@4.1.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)))
       fontkit: 2.0.4
 
   '@pdfme/pdf-lib@5.4.7':
+    dependencies:
+      '@pdf-lib/standard-fonts': 1.0.0
+      '@pdf-lib/upng': 1.0.1
+      color: 4.2.3
+      node-html-better-parser: 1.5.8
+      pako: 2.1.0
+
+  '@pdfme/pdf-lib@5.5.1':
     dependencies:
       '@pdf-lib/standard-fonts': 1.0.0
       '@pdf-lib/upng': 1.0.1
@@ -8174,6 +8188,8 @@ snapshots:
   cssesc@3.0.0: {}
 
   csstype@3.2.2: {}
+
+  csstype@3.2.3: {}
 
   d3-array@3.2.4:
     dependencies:
