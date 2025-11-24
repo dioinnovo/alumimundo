@@ -148,6 +148,53 @@ export async function deleteImage(gcsUrl: string): Promise<void> {
 }
 
 /**
+ * Delete a file from GCS (alias for deleteImage)
+ * @param gcsUrl - GCS URL (e.g., "gs://bucket/path/to/file.pdf")
+ */
+export async function deleteFile(gcsUrl: string): Promise<void> {
+  return deleteImage(gcsUrl)
+}
+
+/**
+ * Upload a claim document to GCS
+ * @param fileBuffer - File data as Buffer
+ * @param destinationPath - Path in bucket
+ * @param contentType - MIME type
+ */
+export async function uploadClaimDocument(
+  fileBuffer: Buffer,
+  destinationPath: string,
+  contentType: string = 'application/pdf'
+): Promise<{
+  gcsUrl: string
+  publicUrl: string
+}> {
+  return uploadImage(fileBuffer, destinationPath, contentType)
+}
+
+/**
+ * Get a signed URL for temporary access to a private file
+ * @param gcsUrl - GCS URL (e.g., "gs://bucket/path/to/file.pdf")
+ * @param expiresInMinutes - URL expiration time in minutes (default 60)
+ */
+export async function getSignedUrl(
+  gcsUrl: string,
+  expiresInMinutes: number = 60
+): Promise<string> {
+  const bucket = getBucket()
+  const path = gcsUrl.replace(`gs://${BUCKET_NAME}/`, '')
+  const file = bucket.file(path)
+
+  const [signedUrl] = await file.getSignedUrl({
+    version: 'v4',
+    action: 'read',
+    expires: Date.now() + expiresInMinutes * 60 * 1000,
+  })
+
+  return signedUrl
+}
+
+/**
  * Check if a file exists in GCS
  *
  * @param gcsUrl - GCS URL (e.g., "gs://bucket/path/to/image.jpg")

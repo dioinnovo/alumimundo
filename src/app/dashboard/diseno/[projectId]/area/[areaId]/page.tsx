@@ -129,7 +129,7 @@ export default function AreaDesignPage({
       await new Promise(resolve => setTimeout(resolve, 1000))
 
       // Navigate to next area or review
-      router.push(`/dashboard/diseno/${params.projectId}/review`)
+      router.push(`/dashboard/diseno/${projectId}/review`)
     } catch (error) {
       console.error('Error saving:', error)
       alert('Error al guardar. Por favor intenta de nuevo.')

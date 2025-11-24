@@ -10,9 +10,12 @@
  * - Multi-format support (AutoCAD, Revit, SketchUp exports)
  */
 
-import pdf from 'pdf-parse'
+import * as pdfParse from 'pdf-parse'
 import * as fs from 'fs/promises'
 import { parseDimensionString, parseScale, type DimensionPair } from './unit-converter'
+
+// pdf-parse is a CommonJS module, need to handle default export
+const pdf = (pdfParse as any).default || pdfParse
 
 export interface ExtractedDimension {
   // Raw extracted data

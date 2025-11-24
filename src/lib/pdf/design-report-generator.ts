@@ -1,5 +1,6 @@
 import { generate } from '@pdfme/generator'
 import { Template, Font } from '@pdfme/common'
+import { text } from '@pdfme/schemas'
 
 export interface AreaSpec {
   areaName: string
@@ -38,59 +39,38 @@ export async function generateDesignReport(data: DesignReportData): Promise<Uint
     schemas: [
       // Cover Page
       {
-        // Logo/Header
         projectTitle: {
           type: 'text',
           position: { x: 20, y: 40 },
           width: 170,
-          height: 20,
-          fontSize: 24,
-          fontColor: '#082B61', // alumimundo-navy
-          fontName: 'Helvetica',
-          alignment: 'left'
+          height: 20
         },
         projectSubtitle: {
           type: 'text',
           position: { x: 20, y: 65 },
           width: 170,
-          height: 10,
-          fontSize: 14,
-          fontColor: '#276770', // alumimundo-teal
-          fontName: 'Helvetica',
-          alignment: 'left'
+          height: 10
         },
         generatedDate: {
           type: 'text',
           position: { x: 20, y: 80 },
           width: 170,
-          height: 8,
-          fontSize: 10,
-          fontColor: '#69727D',
-          fontName: 'Helvetica',
-          alignment: 'left'
+          height: 8
         },
         totalCost: {
           type: 'text',
           position: { x: 20, y: 120 },
           width: 170,
-          height: 25,
-          fontSize: 32,
-          fontColor: '#082B61',
-          fontName: 'Helvetica-Bold',
-          alignment: 'left'
+          height: 25
         },
         costLabel: {
           type: 'text',
           position: { x: 20, y: 145 },
           width: 170,
-          height: 8,
-          fontSize: 12,
-          fontColor: '#69727D',
-          fontName: 'Helvetica',
-          alignment: 'left'
+          height: 8
         }
       }
-    ]
+    ] as any
   }
 
   // Prepare input data
@@ -110,6 +90,9 @@ export async function generateDesignReport(data: DesignReportData): Promise<Uint
     inputs,
     options: {
       font: await getCustomFonts()
+    },
+    plugins: {
+      text
     }
   })
 

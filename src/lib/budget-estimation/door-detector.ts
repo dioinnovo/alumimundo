@@ -13,7 +13,10 @@ import { ChatOpenAI } from '@langchain/openai'
 import { HumanMessage } from '@langchain/core/messages'
 import * as fs from 'fs/promises'
 import * as path from 'path'
-import pdf from 'pdf-parse'
+import * as pdfParse from 'pdf-parse'
+
+// pdf-parse is a CommonJS module, need to handle default export
+const pdf = (pdfParse as any).default || pdfParse
 
 export interface DetectedDoor {
   // Location

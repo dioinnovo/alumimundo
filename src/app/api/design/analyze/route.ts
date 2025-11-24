@@ -128,9 +128,9 @@ async function generateRecommendations(
       name: product.name,
       brand: product.brand,
       category: product.category,
-      unitPrice: product.priceCRC || 0,
+      unitPrice: product.price || 0,
       quantity,
-      totalPrice: (product.priceCRC || 0) * quantity,
+      totalPrice: (product.price || 0) * quantity,
       confidence,
       reasoning: generateReasoning(product, lowerContext)
     }

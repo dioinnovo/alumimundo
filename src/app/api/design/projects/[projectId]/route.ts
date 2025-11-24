@@ -4,11 +4,12 @@ import { prisma } from '@/lib/prisma'
 // GET /api/design/projects/[projectId] - Get a single project
 export async function GET(
   request: NextRequest,
-  { params }: { params: { projectId: string } }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
+    const { projectId } = await params
     const project = await prisma.designProject.findUnique({
-      where: { id: params.projectId },
+      where: { id: projectId },
       include: {
         areas: {
           include: {
@@ -40,9 +41,10 @@ export async function GET(
 // PATCH /api/design/projects/[projectId] - Update a project
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { projectId: string } }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
+    const { projectId } = await params
     const body = await request.json()
     const { name, status, totalEstimate, budgetRange } = body
 
@@ -53,7 +55,7 @@ export async function PATCH(
     if (budgetRange !== undefined) updateData.budgetRange = budgetRange
 
     const project = await prisma.designProject.update({
-      where: { id: params.projectId },
+      where: { id: projectId },
       data: updateData
     })
 
@@ -70,11 +72,12 @@ export async function PATCH(
 // DELETE /api/design/projects/[projectId] - Delete a project
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { projectId: string } }
+  { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
+    const { projectId } = await params
     await prisma.designProject.delete({
-      where: { id: params.projectId }
+      where: { id: projectId }
     })
 
     return NextResponse.json({ success: true })

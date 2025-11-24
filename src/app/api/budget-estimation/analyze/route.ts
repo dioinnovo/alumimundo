@@ -59,7 +59,8 @@ export async function POST(request: NextRequest) {
 
         // Get file path
         const filepath = join(process.cwd(), 'public', doc.url)
-        const fileExt = doc.fileType.toLowerCase()
+        // Extract file extension from mimeType or filename
+        const fileExt = doc.mimeType?.split('/').pop()?.toLowerCase() || doc.originalName.split('.').pop()?.toLowerCase() || 'pdf'
 
         let doorAnnotations: any[] = []
         let metadata: any = {}
@@ -181,10 +182,10 @@ export async function POST(request: NextRequest) {
 
         // Format dimensions for storage (both metric and imperial)
         const dimensionMetric = door.width
-          ? formatDimension(door.width.widthCm, door.width.heightCm, 'metric')
+          ? `${formatDimension(door.width.widthCm, 'CM')} × ${formatDimension(door.width.heightCm, 'CM')}`
           : undefined
         const dimensionImperial = door.width
-          ? formatDimension(door.width.widthInches, door.width.heightInches, 'imperial')
+          ? `${formatDimension(door.width.widthInches, 'INCH')} × ${formatDimension(door.width.heightInches, 'INCH')}`
           : undefined
 
         // Determine door type (use detected or default to INTERIOR_SINGLE)

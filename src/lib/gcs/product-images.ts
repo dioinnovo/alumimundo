@@ -41,7 +41,7 @@ export interface ProductImage {
   contentType: string;
   size: number;
   updated: Date;
-  metadata?: Record<string, string>;
+  metadata?: Record<string, string | number | boolean | null>;
 }
 
 /**
@@ -76,7 +76,7 @@ export async function listProductImages(
         url: `gs://${bucket.name}/${file.name}`,
         publicUrl: file.publicUrl(),
         contentType: metadata.contentType || 'image/jpeg',
-        size: parseInt(metadata.size || '0'),
+        size: parseInt(String(metadata.size || '0')),
         updated: new Date(metadata.updated || Date.now()),
         metadata: metadata.metadata || {},
       });
@@ -151,7 +151,7 @@ export async function searchProductImagesBySKU(
         url: `gs://${bucket.name}/${file.name}`,
         publicUrl: file.publicUrl(),
         contentType: metadata.contentType || 'image/jpeg',
-        size: parseInt(metadata.size || '0'),
+        size: parseInt(String(metadata.size || '0')),
         updated: new Date(metadata.updated || Date.now()),
         metadata: metadata.metadata || {},
       });

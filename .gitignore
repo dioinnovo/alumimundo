@@ -38,3 +38,4 @@ test-*.js
 
 # prisma
 /lib/generated/prisma
+.env.local.backup

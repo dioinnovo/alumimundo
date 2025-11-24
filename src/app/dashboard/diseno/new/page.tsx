@@ -139,7 +139,6 @@ export default function NewDesignProjectPage() {
       <PageHeader
         title="Nuevo Proyecto de Diseño"
         description="Crea un proyecto y deja que nuestra IA te ayude a especificar los mejores materiales"
-        icon={<Sparkles className="w-8 h-8 text-alumimundo-navy" />}
       />
 
       <form onSubmit={handleSubmit} className="max-w-5xl mx-auto">

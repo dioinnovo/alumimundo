@@ -9,6 +9,8 @@ export async function POST(request: NextRequest) {
       areaId,
       productSku,
       productName,
+      brand,
+      category,
       quantity,
       unitPrice,
       totalPrice,
@@ -16,7 +18,7 @@ export async function POST(request: NextRequest) {
       aiConfidence
     } = body
 
-    if (!areaId || !productSku || !productName || quantity === undefined || unitPrice === undefined) {
+    if (!areaId || !productSku || !productName || !brand || !category || quantity === undefined || unitPrice === undefined) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -28,6 +30,8 @@ export async function POST(request: NextRequest) {
         areaId,
         productSku,
         productName,
+        brand,
+        category,
         quantity,
         unitPrice,
         totalPrice: totalPrice || quantity * unitPrice,

@@ -248,9 +248,9 @@ function getRelevantProducts(userMessage: string): any[] {
 
   // Budget-based filtering
   if (filters.budget === 'premium') {
-    filtered = filtered.filter(p => p.brand === 'Kallista' || p.price > 400000)
+    filtered = filtered.filter(p => p.brand === 'Kallista' || (p.price && p.price > 400000))
   } else if (filters.budget === 'economy') {
-    filtered = filtered.filter(p => p.price < 300000)
+    filtered = filtered.filter(p => p.price && p.price < 300000)
   }
 
   // Limit to 8 most relevant products

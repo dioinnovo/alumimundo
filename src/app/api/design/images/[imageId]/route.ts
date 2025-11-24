@@ -4,9 +4,10 @@ import { prisma } from '@/lib/prisma'
 // PATCH /api/design/images/[imageId] - Update image analysis data
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { imageId: string } }
+  { params }: { params: Promise<{ imageId: string }> }
 ) {
   try {
+    const { imageId } = await params
     const body = await request.json()
     const { visionAnalysis, detectedItems, aiTags } = body
 
@@ -16,7 +17,7 @@ export async function PATCH(
     if (aiTags !== undefined) updateData.aiTags = aiTags
 
     const image = await prisma.areaImage.update({
-      where: { id: params.imageId },
+      where: { id: imageId },
       data: updateData
     })
 
@@ -33,11 +34,12 @@ export async function PATCH(
 // DELETE /api/design/images/[imageId] - Delete an image
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { imageId: string } }
+  { params }: { params: Promise<{ imageId: string }> }
 ) {
   try {
+    const { imageId } = await params
     await prisma.areaImage.delete({
-      where: { id: params.imageId }
+      where: { id: imageId }
     })
 
     return NextResponse.json({ success: true })

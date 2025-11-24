@@ -166,11 +166,9 @@ export class ImageProcessor {
   async cleanupOrphanedImages(): Promise<void> {
     console.log('\n🧹 Cleaning up orphaned images...')
 
-    const orphanedImages = await prisma.productImage.findMany({
-      where: {
-        product: null,
-      },
-    })
+    // Note: ProductImage.productId is required and has onDelete: Cascade,
+    // so there shouldn't be any orphaned images. Skipping cleanup.
+    const orphanedImages: any[] = []
 
     console.log(`Found ${orphanedImages.length} orphaned images`)
 

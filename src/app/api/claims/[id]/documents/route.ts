@@ -64,10 +64,11 @@ export async function POST(
     const buffer = Buffer.from(bytes);
 
     // Upload to Google Cloud Storage
+    // Generate destination path: claims/{claimId}/{filename}
+    const destinationPath = `claims/${claimId}/${file.name}`
     const documentMetadata = await uploadClaimDocument(
-      claimId,
-      file.name,
       buffer,
+      destinationPath,
       file.type
     );
 

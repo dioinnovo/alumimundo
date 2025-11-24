@@ -290,19 +290,19 @@ export function MaterialBrowser({
                           {/* Price & Stock */}
                           <div className="flex items-center justify-between mt-2">
                             <span className="text-sm font-semibold text-alumimundo-navy">
-                              {product.priceCRC ? formatPrice(product.priceCRC) : 'Precio a consultar'}
+                              {product.price ? formatPrice(product.price) : 'Precio a consultar'}
                             </span>
-                            {product.stock !== undefined && (
+                            {product.stockQuantity !== undefined && (
                               <span
                                 className={`text-xs px-2 py-0.5 rounded-full ${
-                                  product.stock > 10
+                                  product.stockQuantity > 10
                                     ? 'bg-green-100 text-green-700'
-                                    : product.stock > 0
+                                    : product.stockQuantity > 0
                                     ? 'bg-yellow-100 text-yellow-700'
                                     : 'bg-red-100 text-red-700'
                                 }`}
                               >
-                                {product.stock > 0 ? `${product.stock} disponibles` : 'Agotado'}
+                                {product.stockQuantity > 0 ? `${product.stockQuantity} disponibles` : 'Agotado'}
                               </span>
                             )}
                           </div>

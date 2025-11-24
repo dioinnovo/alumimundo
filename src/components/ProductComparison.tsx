@@ -161,14 +161,14 @@ export default function ProductComparison({
               )}
 
               {/* Finish Row */}
-              {products.some(p => p.specifications?.finish) && (
+              {products.some(p => p.specifications?.finishes) && (
                 <tr className={cn('border-t', designTokens.borders.divider, designTokens.backgrounds.cardSecondary)}>
                   <td className={cn('p-4 font-semibold border-r', designTokens.borders.divider, designTokens.text.primary)}>
                     Acabado
                   </td>
                   {products.map((product) => (
                     <td key={product.id} className={cn('p-4 text-center border-r', designTokens.borders.divider, designTokens.text.primary)}>
-                      {product.specifications?.finish || <Minus size={16} className="mx-auto text-gray-400" />}
+                      {product.specifications?.finishes?.join(', ') || <Minus size={16} className="mx-auto text-gray-400" />}
                     </td>
                   ))}
                 </tr>

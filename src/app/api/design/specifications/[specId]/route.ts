@@ -4,9 +4,10 @@ import { prisma } from '@/lib/prisma'
 // PATCH /api/design/specifications/[specId] - Update a specification
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { specId: string } }
+  { params }: { params: Promise<{ specId: string }> }
 ) {
   try {
+    const { specId } = await params
     const body = await request.json()
     const { quantity, unitPrice, totalPrice } = body
 
@@ -20,7 +21,7 @@ export async function PATCH(
       } else {
         // Get current unit price to recalculate
         const current = await prisma.areaSpecification.findUnique({
-          where: { id: params.specId }
+          where: { id: specId }
         })
         if (current) {
           updateData.totalPrice = quantity * current.unitPrice
@@ -30,7 +31,7 @@ export async function PATCH(
       updateData.unitPrice = unitPrice
       // Get current quantity to recalculate
       const current = await prisma.areaSpecification.findUnique({
-        where: { id: params.specId }
+        where: { id: specId }
       })
       if (current) {
         updateData.totalPrice = current.quantity * unitPrice
@@ -42,7 +43,7 @@ export async function PATCH(
     }
 
     const specification = await prisma.areaSpecification.update({
-      where: { id: params.specId },
+      where: { id: specId },
       data: updateData
     })
 
@@ -59,11 +60,12 @@ export async function PATCH(
 // DELETE /api/design/specifications/[specId] - Delete a specification
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { specId: string } }
+  { params }: { params: Promise<{ specId: string }> }
 ) {
   try {
+    const { specId } = await params
     await prisma.areaSpecification.delete({
-      where: { id: params.specId }
+      where: { id: specId }
     })
 
     return NextResponse.json({ success: true })

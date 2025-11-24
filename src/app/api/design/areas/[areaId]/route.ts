@@ -4,11 +4,12 @@ import { prisma } from '@/lib/prisma'
 // GET /api/design/areas/[areaId] - Get a single area
 export async function GET(
   request: NextRequest,
-  { params }: { params: { areaId: string } }
+  { params }: { params: Promise<{ areaId: string }> }
 ) {
   try {
+    const { areaId } = await params
     const area = await prisma.designArea.findUnique({
-      where: { id: params.areaId },
+      where: { id: areaId },
       include: {
         images: true,
         specifications: true
@@ -35,9 +36,10 @@ export async function GET(
 // PATCH /api/design/areas/[areaId] - Update an area
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { areaId: string } }
+  { params }: { params: Promise<{ areaId: string }> }
 ) {
   try {
+    const { areaId } = await params
     const body = await request.json()
     const {
       status,
@@ -55,7 +57,7 @@ export async function PATCH(
     if (estimatedCost !== undefined) updateData.estimatedCost = estimatedCost
 
     const area = await prisma.designArea.update({
-      where: { id: params.areaId },
+      where: { id: areaId },
       data: updateData
     })
 
@@ -72,11 +74,12 @@ export async function PATCH(
 // DELETE /api/design/areas/[areaId] - Delete an area
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { areaId: string } }
+  { params }: { params: Promise<{ areaId: string }> }
 ) {
   try {
+    const { areaId } = await params
     await prisma.designArea.delete({
-      where: { id: params.areaId }
+      where: { id: areaId }
     })
 
     return NextResponse.json({ success: true })
