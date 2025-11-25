@@ -138,18 +138,6 @@ export default function AdminDashboard() {
               <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">Admin Dashboard</h1>
             </div>
             <div className="flex items-center gap-4">
-              <Link 
-                href="/demo"
-                className="text-gray-600 dark:text-gray-400 hover:text-stellar-orange transition"
-              >
-                Demo
-              </Link>
-              <Link 
-                href="/inspection"
-                className="text-gray-600 dark:text-gray-400 hover:text-stellar-orange transition"
-              >
-                Inspection
-              </Link>
               <button
                 onClick={fetchClaims}
                 className="p-2 text-gray-600 dark:text-gray-400 hover:text-stellar-orange transition"
