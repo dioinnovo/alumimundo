@@ -72,6 +72,7 @@ function getFastLLM(): AzureChatOpenAI {
     const azureApiKey = process.env.AZURE_OPENAI_API_KEY;
     const azureEndpoint = process.env.AZURE_OPENAI_ENDPOINT;
     const deploymentName = process.env.AZURE_OPENAI_DEPLOYMENT_NAME || "gpt-4o";
+    const apiVersion = process.env.AZURE_OPENAI_VERSION || "2024-12-01-preview";
 
     if (!azureApiKey || !azureEndpoint) {
       throw new Error('Azure OpenAI credentials not set. Please add AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT to your .env.local file.');
@@ -81,6 +82,7 @@ function getFastLLM(): AzureChatOpenAI {
       azureOpenAIApiKey: azureApiKey,
       azureOpenAIEndpoint: azureEndpoint,
       azureOpenAIApiDeploymentName: deploymentName,
+      azureOpenAIApiVersion: apiVersion,
       temperature: 0.1, // Low temperature for precise SQL
     });
   }
