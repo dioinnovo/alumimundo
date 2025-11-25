@@ -121,11 +121,13 @@ async function getCustomFonts(): Promise<Font> {
 }
 
 function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('es-CR', {
-    style: 'currency',
-    currency: 'CRC',
-    minimumFractionDigits: 0
+  // Format with Costa Rican locale and add ₡ symbol manually for better PDF compatibility
+  const formattedNumber = new Intl.NumberFormat('es-CR', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
   }).format(amount)
+
+  return `₡${formattedNumber}`
 }
 
 // Alternative: Simple PDF generation using jsPDF (more straightforward)
@@ -182,7 +184,8 @@ export async function generateSimpleDesignReport(data: DesignReportData): Promis
   addText('RESUMEN EJECUTIVO', 14, true)
   yPos += 3
 
-  doc.setFillColor(8, 43, 97, 0.1)
+  // Light blue background for executive summary
+  doc.setFillColor(241, 245, 249) // Very light gray-blue
   doc.rect(20, yPos, 170, 25, 'F')
 
   yPos += 8
@@ -265,7 +268,12 @@ export async function generateSimpleDesignReport(data: DesignReportData): Promis
   addText('VALIDACIÓN DE CUMPLIMIENTO', 14, true)
   yPos += 3
 
-  doc.setFillColor(data.compliance.passed ? 34 : 220, data.compliance.passed ? 197 : 53, data.compliance.passed ? 94 : 69, 0.1)
+  // Light green or light red background for compliance section
+  if (data.compliance.passed) {
+    doc.setFillColor(220, 252, 231) // Very light green
+  } else {
+    doc.setFillColor(254, 242, 242) // Very light red
+  }
   doc.rect(20, yPos, 170, 8 + (data.compliance.notes.length * 6), 'F')
 
   yPos += 6
