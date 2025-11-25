@@ -24,7 +24,7 @@
     "@langchain/langgraph": "^0.4.9",
     "@langchain/openai": "^0.6.11",
     "@pdfme/common": "^5.4.8",
-    "@pdfme/generator": "^5.4.8",
+    "@pdfme/generator": "^5.5.1",
     "@pdfme/schemas": "^5.4.8",
     "@prisma/client": "6.19.0",
     "@radix-ui/react-dialog": "^1.1.15",
